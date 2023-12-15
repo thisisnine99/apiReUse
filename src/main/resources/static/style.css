@@ -21,7 +21,47 @@ body {
     font-family : 'SDSamliphopangche_Outline';
 }
 
-
 a {
     text-decoration : none;
 }
+
+.category{
+    color : white;
+    display : block;
+    position : relative;
+    height : 40px;
+    line-height : 40px;
+    padding : 0 24px;
+    font-size : 17px;
+    letter-spacing : 0.1em;
+    white-space : nowrap;
+    text-align : center;
+}
+
+.category_bar{
+    color : white;
+    display : block;
+    position : relative;
+    height : 40px;
+    line-height : 40px;
+    padding : 0 24px;
+    font-size : 17px;
+    font-weight : bold;
+    letter-spacing : 0.1em;
+    white-space : nowrap;
+
+}
+
+.category:after {
+   display:block;
+   width:70px;
+   content: '';/*comtent안은 밑줄 디자인을 위해 비워두세요.*/
+   border-bottom: solid 2px red;
+   transform: scaleX(0);/*크기를 0으로 줌으로써 평상시엔 밑줄 없음*/
+   transition: transform 250ms ease-in-out; /*변형 방식*/
+}
+
+.category:hover:after {
+   transform: scaleX(1);/*a 속성에 hover시 after를 기존 크기로 변경*/
+}
+

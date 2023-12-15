@@ -5,8 +5,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 </head>
 <body>
-<div style="background : black; height : 260px; display : flex; flex-direction: column; align-items : center;">
-    <div style="border-bottom: 3px solid #FFF; width : 50%; display: inline-flex; justify-content : flex-end;" >
+<div style="background : black; display : flex; flex-direction: column; align-items : center; height : 1000px;">
+    <div style="border-bottom: 1.5px solid #FFF; width : 50%; display: inline-flex; justify-content : flex-end;" >
         <div class="logo" style="margin-top : 4%; font-size : xx-large">
             <div class="logo_top">
                 <span style="color : #fbd7ed;">무비</span>
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="login" style="margin: 10% 0% 0% 14%; font-size : 14px; width : 27%;">
-            <img src="/9382707.png" style="width : 15px; margin-left : 10%;">
+            <img src="/conin.png" style="width : 15px; margin-left : 10%;">
             <a style="color : #FFF;" href="">코인충전</a>
             <a style="color : #FFF; margin-left : 2%;" href="">고객센터</a>
             <a style="color : #FFF; margin-left : 2%;" href="">로그인</a>
@@ -26,10 +26,18 @@
         </div>
     </div>
     <div>
-        <a style="color : #FFF;" href="">영화</a>
-        <a style="color : #FFF;" href="">TV</a>
-        <a style="color : #FFF;" href="">책</a>
-        <a style="color : #FFF;" href="">웹툰</a>
+        <li style="display : flex;">
+            <a class="category" href="#">영화</a>
+            <span class="category_bar" >|</span>
+            <a class="category" href="#">TV</a>
+            <span class="category_bar" >|</span>
+            <a class="category" href="#">책</a>
+            <span class="category_bar" >|</span>
+            <a class="category" href="#">웹툰</a>
+        </li>
+    </div>
+    <div class="main_img">
+        <img src="/노량.jpg" style="width : 1200px;">
     </div>
 </div>
 </body>
