@@ -17,6 +17,22 @@ body {
     font-family : 'SUITE-Regular',cursive;
 }
 
+.layout-co{
+    background : black;
+    display : flex;
+    flex-direction: column;
+    align-items : center;
+    height : 1000px;
+}
+
+.layout{
+    border-bottom: 1.5px solid #FFF;
+    width : 50%;
+    display: inline-flex;
+    justify-content : flex-end;
+    white-space : nowrap;
+}
+
 .logo{
     font-family : 'SDSamliphopangche_Outline';
 }
