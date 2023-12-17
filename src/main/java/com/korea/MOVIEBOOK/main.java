@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class main {
     @GetMapping("/")
     public String test(){
-        return "layout2";
+        return "layout";
     }
     @GetMapping("/2")
     public String test2(){
-        return "layout";
+        return "layout2";
     }
 }
