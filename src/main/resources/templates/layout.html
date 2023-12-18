@@ -5,15 +5,15 @@
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 </head>
 <body>
-<div style="background : black; display : flex; flex-direction: column; align-items : center; height : 1000px;">
-    <div style="border-bottom: 1.5px solid #FFF; width : 50%; display: inline-flex; justify-content : flex-end;" >
-        <div class="logo" style="margin-top : 4%; font-size : xx-large">
-            <div class="logo_top">
+<div class="layout-co">
+    <div class="layout">
+        <div class="logo" style="margin-top : 4%; font-size : xx-large;">
+            <div class="logo-top">
                 <span style="color : #fbd7ed;">무비</span>
-                <span style="color : white; ">MOVIE</span>
+                <span style="color : #FFFFFF; ">MOVIE</span>
             </div>
-            <div class="logo_bottom">
-                <span style="color : white;">BOOK</span>
+            <div class="logo-bottom">
+                <span style="color : #FFFFFF;">BOOK</span>
                 <span style="color : #fbd7ed; margin-left : 5px;">부비</span>
             </div>
         </div>
@@ -28,18 +28,69 @@
     <div>
         <li style="display : flex;">
             <a class="category" href="#">영화</a>
-            <span class="category_bar" >|</span>
-            <a class="category" th:href="@{/drama/dramaList}">TV</a>
-            <span class="category_bar" >|</span>
-            <a class="category" href="/book/mainPage">책</a>
-            <span class="category_bar" >|</span>
+            <span class="category-bar" >|</span>
+            <a class="category" href="#">TV</a>
+            <span class="category-bar" >|</span>
+            <a class="category" href="#">책</a>
+            <span class="category-bar" >|</span>
             <a class="category" href="#">웹툰</a>
         </li>
     </div>
-    <div class="main_img">
-        <img src="/노량.jpg" style="width : 1200px;">
+    <div class="slider-wrap">
+        <div class="slider-img">
+            <div class="slider-inner">
+                <div class="slider s1"><img src="노량.jpg" alt="이미지1"></div>
+                <div class="slider s2"><img src="트롤.jpg" alt="이미지2"></div>
+                <div class="slider s3"><img src="노량.jpg" alt="이미지3"></div>
+            </div>
+        </div>
+        <div class="slider-btn">
+            <a href="#" class="prev" title="이전이미지">prev</a>
+            <a href="#" class="next" title="다음이미지">next</a>
+        </div>
     </div>
 </div>
+<script>
+    const sliderWrap = document.querySelector(".slider-wrap");
+    const sliderImg = sliderWrap.querySelector(".slider-img");             // 보여지는 영역
+    const sliderInner = sliderWrap.querySelector(".slider-inner");         // 움직이는 영역
+    const slider = sliderWrap.querySelectorAll(".slider");                 // 개별 이미지
+    const sliderBtn = sliderWrap.querySelectorAll(".slider-btn a");        // 버튼
+
+    let currentIndex = 0;                                                   // 현재 보이는 이미지
+    let sliderCount = slider.length;                                        // 이미지 갯수
+    let sliderInterval = 2000;                                              // 이미지 변경 간격 시간
+    let sliderWidth = slider[0].clientWidth;                                // 이미지 가로값 구하기
+    let dotIndex = "";
+
+    function gotoSlider(num){
+        sliderInner.style.transition = "all 400ms";
+        sliderInner.style.transform = "translateX(" + -sliderWidth * num + "px)";
+        currentIndex = num;
+    }
+
+    sliderBtn.forEach((btn, index) => {
+        btn.addEventListener("click", () => {
+            let prevIndex = (currentIndex + (sliderCount-1)) % sliderCount;
+            let nextIndex = (currentIndex+1) % sliderCount;
+
+            if(btn.classList.contains("prev")){
+                gotoSlider(prevIndex);
+            } else {
+                gotoSlider(nextIndex);
+            }
+        });
+    });
+
+    showSlides();
+
+<!--     function showSlides() {-->
+<!--        setTimeout(() => {-->
+<!--            showSlides();-->
+<!--        }, 500);-->
+<!--    }-->
+
+</script>
 </body>
 </html>
 

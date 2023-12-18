@@ -9,4 +9,8 @@ public class main {
     public String test(){
         return "layout";
     }
+    @GetMapping("/2")
+    public String test2(){
+        return "layout2";
+    }
 }
