@@ -27,9 +27,10 @@ body {
 
 .layout2{
     border-bottom: 2.5px solid #DEE2E6;
-    margin-top : 2%;
+    margin-top : 13px;
+    margin-bottom : 25px;
     width : 100%;
-    display: flex;
+    padding: 0.5%;
     white-space : nowrap;
 }
 
@@ -54,10 +55,9 @@ a {
 }
 
 .search-co{
-    display : inline-flex;
+    display: flex;
     font-size : 14px;
     width : 35%;
-    margin-left : 15%;
 }
 
 .search{
@@ -69,3 +69,31 @@ a {
     background : #E9ECEF;
     border : none;
 }
+
+
+html,
+    body {
+      position: relative;
+      height: 100%;
+    }
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
