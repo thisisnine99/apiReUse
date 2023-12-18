@@ -3,6 +3,31 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+
+        .swiper {
+          width: 100%;
+          height: 100%;
+        }
+
+        .swiper-slide {
+          text-align: center;
+          font-size: 18px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .swiper-slide img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+    </style>
 </head>
 <body>
 <div class="layout-co">
@@ -28,20 +53,20 @@
     <div>
         <li style="display : flex;">
             <a class="category" href="#">영화</a>
-            <span class="category-bar" >|</span>
+            <span class="category-bar">|</span>
             <a class="category" href="#">TV</a>
-            <span class="category-bar" >|</span>
+            <span class="category-bar">|</span>
             <a class="category" href="#">책</a>
-            <span class="category-bar" >|</span>
+            <span class="category-bar">|</span>
             <a class="category" href="#">웹툰</a>
         </li>
     </div>
     <div class="slider-wrap">
         <div class="slider-img">
             <div class="slider-inner">
-                <div class="slider s1"><img src="노량.jpg" alt="이미지1"></div>
-                <div class="slider s2"><img src="트롤.jpg" alt="이미지2"></div>
-                <div class="slider s3"><img src="노량.jpg" alt="이미지3"></div>
+                <div class="slider s1"><img src="노량2.jpg" alt="이미지1"></div>
+                <div class="slider s2"><img src="소년시대2.jpg" alt="이미지2"></div>
+                <div class="slider s3"><img src="노량2.jpg" alt="이미지3"></div>
             </div>
         </div>
         <div class="slider-btn">
@@ -49,8 +74,134 @@
             <a href="#" class="next" title="다음이미지">next</a>
         </div>
     </div>
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div >
+                    <span style="color : white; font-size : 20px; font-weight : bold; margin-bottom : 10px;">영화 TOP 5</span>
+                </div>
+                <div class="list" style="display : flex; color : #FFF; margin-bottom : 20px; margin-top : 10px;">
+                    <div class="top-list" style="width : 184px; margin-right : 20px;">
+                        <div class="item" style="text-align : center;">
+                            <div class="top-info"
+                                 style="border-radius: 4px; overflow : hidden; position : relative; height : 262px;">
+                                <div class="top-img" style="display : block; max-height : 262px;">
+                                    <img src="소년시대.jpg" alt="이미지1" style="width: 100%; height: auto;">
+                                </div>
+                            </div>
+                            <div class="btm-info"
+                                 style="margin-top : 20px; display : flex; flex-direction : column; align-items : center;">
+                                <div style="display : inline-flex;">
+                                    <div style="border-radius: 3px; background : #E9B630; width : 22px; height : 22px; margin-right : 5px;">
+                                        <span style="font-weight : bold;"> 12 </span>
+                                    </div>
+                                    <span style="font-size : 13px;"> 소년시대 </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="top-list" style="width : 184px; margin-right : 20px;">
+                        <div class="item" style="text-align : center;">
+                            <div class="top-info"
+                                 style="border-radius: 4px; overflow : hidden; position : relative; height : 262px;">
+                                <div class="top-img" style="display : block; max-height : 262px;">
+                                    <img src="트롤.jpg" alt="이미지1" style="width: 100%; height: auto;">
+                                </div>
+                            </div>
+                            <div class="btm-info"
+                                 style="margin-top : 20px; display : flex; flex-direction : column; align-items : center;">
+                                <div style="display : inline-flex;">
+                                    <div style="border-radius: 3px; background : #E9B630; width : 22px; height : 22px; margin-right : 5px;">
+                                        <span style="font-weight : bold;"> 7 </span>
+                                    </div>
+                                    <span style="font-size : 13px;"> 트롤 </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="top-list" style="width : 184px; margin-right : 20px;">
+                        <div class="item" style="text-align : center;">
+                            <div class="top-info"
+                                 style="border-radius: 4px; overflow : hidden; position : relative; height : 262px;">
+                                <div class="top-img" style="display : block; max-height : 262px;">
+                                    <img src="노량.jpg" alt="이미지1" style="width: 100%; height: auto;">
+                                </div>
+                            </div>
+                            <div class="btm-info"
+                                 style="margin-top : 20px; display : flex; flex-direction : column; align-items : center;">
+                                <div style="display : inline-flex;">
+                                    <div style="border-radius: 3px; background : #E9B630; width : 22px; height : 22px; margin-right : 5px;">
+                                        <span style="font-weight : bold;"> 12 </span>
+                                    </div>
+                                    <span style="font-size : 13px;"> 노량 </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="top-list" style="width : 184px; margin-right : 20px;">
+                        <div class="item" style="text-align : center;">
+                            <div class="top-info"
+                                 style="border-radius: 4px; overflow : hidden; position : relative; height : 262px;">
+                                <div class="top-img" style="display : block; max-height : 262px;">
+                                    <img src="그시절,우리가좋아했던소녀.jpg" alt="이미지1" style="width: 100%; height: auto;">
+                                </div>
+                            </div>
+                            <div class="btm-info"
+                                 style="margin-top : 20px; display : flex; flex-direction : column; align-items : center;">
+                                <div style="display : inline-flex;">
+                                    <div style="border-radius: 3px; background : #E9B630; width : 22px; height : 22px; margin-right : 5px;">
+                                        <span style="font-weight : bold;"> 12 </span>
+                                    </div>
+                                    <span style="font-size : 13px;"> 그시절,우리가좋아했던소녀 </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="top-list"
+                         style="width : 184px; margin-right : 20px; white-space : nowrap; text-overflow : ellipsis;  -webkit-line-clamp: 2;">
+                        <div class="item" style="text-align : center;">
+                            <div class="top-info"
+                                 style="border-radius: 4px; overflow : hidden; position : relative; height : 262px;">
+                                <div class="top-img" style="display : block; max-height : 262px;">
+                                    <img src="밤이 되었습니다.jpg" alt="이미지1" style="width: 100%; height: auto;">
+                                </div>
+                            </div>
+                            <div class="btm-info"
+                                 style="margin-top : 20px; display : flex; flex-direction : column; align-items : center;">
+                                <div style="display : inline-flex;">
+                                    <div style="border-radius: 3px; background : #E9B630; width : 22px; height : 22px; margin-right : 5px;">
+                                        <span style="font-weight : bold;"> 12 </span>
+                                    </div>
+                                    <span style="font-size : 13px;"> 밤이 되었습니다. </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide">Slide 2</div>
+            <div class="swiper-slide">Slide 7</div>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+    </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <script>
+
+    var swiper = new Swiper(".mySwiper", {
+      pagination: {
+        el: ".swiper-pagination",
+        type: "fraction",
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+
     const sliderWrap = document.querySelector(".slider-wrap");
     const sliderImg = sliderWrap.querySelector(".slider-img");             // 보여지는 영역
     const sliderInner = sliderWrap.querySelector(".slider-inner");         // 움직이는 영역
@@ -82,13 +233,19 @@
         });
     });
 
-    showSlides();
+     function showSlides() {
+        setTimeout(() => {
+            next();
+            showSlides();
+        }, 5000);
+    }
 
-<!--     function showSlides() {-->
-<!--        setTimeout(() => {-->
-<!--            showSlides();-->
-<!--        }, 500);-->
-<!--    }-->
+    function next() {
+        let nextIndex = (currentIndex + 1) % sliderCount;
+        gotoSlider(nextIndex);
+    }
+
+    showSlides();
 
 </script>
 </body>
