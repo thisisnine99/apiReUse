@@ -3,31 +3,9 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
     <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <style>
-
-        .swiper {
-          width: 100%;
-          height: 100%;
-        }
-
-        .swiper-slide {
-          text-align: center;
-          font-size: 18px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .swiper-slide img {
-          display: block;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
 <body>
 <div class="layout-co">
@@ -69,19 +47,21 @@
                 <div class="slider s3"><img src="노량2.jpg" alt="이미지3"></div>
             </div>
         </div>
-        <div class="slider-btn">
+        <div class="slider-btn" style="white-space : nowrap;">
             <a href="#" class="prev" title="이전이미지">prev</a>
             <a href="#" class="next" title="다음이미지">next</a>
         </div>
     </div>
-    <div class="swiper mySwiper">
+    <div class="swiper mySwiper" style="width: 57%; height: 100%;">
         <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <div >
-                    <span style="color : white; font-size : 20px; font-weight : bold; margin-bottom : 10px;">영화 TOP 5</span>
+            <div class="swiper-slide" style="display:flex; flex-direction : column; font-size: 18px; justify-content: center;
+                align-items: center; white-space : nowrap;">
+
+                <div style="width : 100%; text-align : left;">
+                    <span style="color : white; font-size : 20px; font-weight : bold; margin-left : 5%;">영화 TOP 5</span>
                 </div>
                 <div class="list" style="display : flex; color : #FFF; margin-bottom : 20px; margin-top : 10px;">
-                    <div class="top-list" style="width : 184px; margin-right : 20px;">
+                    <div class="top-list" style="width : 184px; margin-right : 20px; margin-left : 20px;">
                         <div class="item" style="text-align : center;">
                             <div class="top-info"
                                  style="border-radius: 4px; overflow : hidden; position : relative; height : 262px;">
