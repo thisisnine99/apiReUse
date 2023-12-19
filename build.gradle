@@ -41,6 +41,9 @@ dependencies {
 	// 입력값 검증 관련
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.jsoup:jsoup:1.15.3'
+	implementation 'com.mysql:mysql-connector-j:8.0.33'
+	implementation 'org.jsoup:jsoup:1.14.3' // 현재(2023년 12월)의 최신 버전
+
 }
 
 tasks.named('bootBuildImage') {
