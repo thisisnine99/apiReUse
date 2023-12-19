@@ -11,7 +11,7 @@
     <div class="swiper mySwiper">
     <div class="swiper-wrapper">
         <!-- Thymeleaf를 사용하여 백엔드에서 전달한 엔터티 정보를 표시 -->
-        <div th:each="drama : ${dramaList}" class="swiper-slide">
+        <div th:each="drama : ${dramaList}" class="swiper-slide" style="overflow : hidden;">
             <img th:src="@{${drama.imageUrl}}" alt="Drama Image">
             <div class="slide-caption" th:text="${drama.title}"></div>
             <div class="additional-info">
