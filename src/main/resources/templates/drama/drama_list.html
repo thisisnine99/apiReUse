@@ -1,32 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <link rel="stylesheet" type="text/css" th:href="@{/dramaList.css}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <meta charset="UTF-8">
     <title>한국 TV 프로그램 인기 순위</title>
 </head>
 <body>
-<div class="swiper-container" >
-    <!-- Additional required wrapper -->
+<div class="swiper-container">
     <div class="swiper-wrapper">
         <div th:each="drama : ${dramaList}" class="swiper-slide">
             <a th:href="@{/drama/{id}(id=${drama.id})}">
-            <img th:src="@{${drama.imageUrl}}" alt="Drama Image">
-            <div class="slide-caption" th:text="${drama.title}"></div>
+                <img th:src="@{${drama.imageUrl}}" alt="Drama Image">
+                <div class="slide-caption" th:text="${drama.title}"></div>
             </a>
         </div>
     </div>
-    <!-- If we need pagination -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
     <div class="swiper-pagination"></div>
-    <!-- If we need scrollbar -->
-    <div class="swiper-scrollbar"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
     var swiper = new Swiper(".swiper-container", {
       pagination: {
         el: ".swiper-pagination",
+        type: "fraction",
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
       },
     });
 </script>
@@ -34,10 +37,11 @@
     <ul>
         <li th:each="drama : ${dramaList}">
             <a th:href="@{/drama/{id}(id=${drama.id})}">
-            <img th:src="@{${drama.imageUrl}}" alt="Drama Image">
-            <span th:text="${drama.title}"></span>
+                <img th:src="@{${drama.imageUrl}}" alt="Drama Image">
+                <span th:text="${drama.title}"></span>
             </a>
         </li>
     </ul>
+</div>
 </body>
 </html>
