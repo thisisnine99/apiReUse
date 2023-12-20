@@ -42,8 +42,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.jsoup:jsoup:1.15.3'
 	implementation 'com.mysql:mysql-connector-j:8.0.33'
-	implementation 'org.jsoup:jsoup:1.14.3' // 현재(2023년 12월)의 최신 버전
-//	implementation group: 'org.json', name: 'json', version: '20090211'
+	//Json 의존성
 	implementation 'com.googlecode.json-simple:json-simple:1.1'
 }
 
