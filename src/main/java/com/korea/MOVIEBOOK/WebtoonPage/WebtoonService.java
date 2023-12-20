@@ -16,11 +16,12 @@ public class WebtoonService {
         return webtoonRepository.findAll();
     }
 
-    public void save(String title, String img)
+    public void save(String title, String img, String author)
     {
         Webtoon  webtoon = new Webtoon();
         webtoon.setTitle(title);
         webtoon.setImageUrl(img);
+        webtoon.setAuthor(author);
         this.webtoonRepository.save(webtoon);
     }
 }
