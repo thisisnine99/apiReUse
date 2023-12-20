@@ -7,6 +7,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
@@ -16,13 +18,10 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
-@RestController
+@Controller
 public class WebtoonApi {
 
     private final WebtoonService webtoonService;
@@ -37,7 +36,10 @@ public class WebtoonApi {
             HttpHeaders header = new HttpHeaders();
             HttpEntity<?> entity = new HttpEntity<>(header);
             String url = "https://korea-webtoon-api.herokuapp.com";
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "?").build();
+            String com = "kakao";
+
+
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url+ "/?service="+ com +"&updateDay=mon").build();
 
             ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
             result.put("statusCode", resultMap.getStatusCodeValue()); //http status code를 확인
@@ -49,10 +51,12 @@ public class WebtoonApi {
             ArrayList<Map> webtoonsList = (ArrayList<Map>) resultMap.getBody().get("webtoons");
             LinkedHashMap mnList = new LinkedHashMap<>();
             for (Map obj : webtoonsList) {
-                webtoonService.save((String)obj.get("title"), (String)obj.get("img"));
+                webtoonService.save((String)obj.get("title"), (String)obj.get("img"), (String)obj.get("author"));
             }
+
             ObjectMapper mapper = new ObjectMapper();
             jsonInString = mapper.writeValueAsString(mnList);
+
         }
         catch (HttpClientErrorException | HttpServerErrorException e) {
             result.put("statusCode", e.getRawStatusCode());
@@ -65,6 +69,6 @@ public class WebtoonApi {
             result.put("body", "excpetion오류");
             System.out.println(e.toString());
         }
-        return jsonInString;
+        return "error";
     }
 }

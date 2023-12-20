@@ -19,12 +19,8 @@ public class Webtoon {
 
     private String imageUrl;
 
-    private String jenre;
+    private String author;
 
-    private String authorName;
-
-    private String illustratorName;
-
-    private String publicationDay;
+    private String updateDay;
 
 }
