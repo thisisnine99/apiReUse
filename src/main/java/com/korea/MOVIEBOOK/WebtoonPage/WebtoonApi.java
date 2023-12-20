@@ -2,6 +2,7 @@ package com.korea.MOVIEBOOK.WebtoonPage;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,8 +21,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
 public class WebtoonApi {
+
+    private final WebtoonService webtoonService;
 
     @GetMapping("/webtoon")
     public String getAPI() {
@@ -41,11 +45,11 @@ public class WebtoonApi {
             result.put("body", resultMap.getBody()); //실제 데이터 정보 확인
 
 
-            LinkedHashMap lm = (LinkedHashMap) resultMap.getBody().get("totalWebtoonCount");
-            ArrayList<Map> webtoonsList = (ArrayList<Map>) lm.get("webtoons");
+//            LinkedHashMap lm = (LinkedHashMap) resultMap.getBody().get("totalWebtoonCount");
+            ArrayList<Map> webtoonsList = (ArrayList<Map>) resultMap.getBody().get("webtoons");
             LinkedHashMap mnList = new LinkedHashMap<>();
             for (Map obj : webtoonsList) {
-                mnList.put(obj.get("_id"), obj.get("title"));
+                webtoonService.save((String)obj.get("title"), (String)obj.get("img"));
             }
             ObjectMapper mapper = new ObjectMapper();
             jsonInString = mapper.writeValueAsString(mnList);

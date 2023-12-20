@@ -15,4 +15,12 @@ public class WebtoonService {
     public List<Webtoon> findAllWebtoonList() {
         return webtoonRepository.findAll();
     }
+
+    public void save(String title, String img)
+    {
+        Webtoon  webtoon = new Webtoon();
+        webtoon.setTitle(title);
+        webtoon.setImageUrl(img);
+        this.webtoonRepository.save(webtoon);
+    }
 }
