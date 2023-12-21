@@ -46,6 +46,7 @@ dependencies {
 	implementation 'org.webjars:jquery:3.6.0'
 
 
+	implementation 'com.googlecode.json-simple:json-simple:1.1'	//	json
 }
 
 tasks.named('bootBuildImage') {
