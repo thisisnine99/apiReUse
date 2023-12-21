@@ -10,9 +10,9 @@ import lombok.Setter;
 @Entity
 public class Webtoon {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column(length = 30)
     private String title;

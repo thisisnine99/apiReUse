@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout2}">
+<html layout:decorate="~{layout2}" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8" />
@@ -64,6 +64,10 @@
 
 <div>
     <div>
+        <h1>Webtoon List</h1>
+        <ul th:each="webtoon : ${webtoonList}">
+            <li th:text="${webtoon}"></li>
+        </ul>
     </div>
 </div>
 <!-- Swiper JS -->

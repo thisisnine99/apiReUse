@@ -1,27 +1,78 @@
 package com.korea.MOVIEBOOK.WebtoonPage;
 
 
+import com.korea.MOVIEBOOK.book.BookDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class WebtoonService {
-
     private final WebtoonRepository webtoonRepository;
 
-    public List<Webtoon> findAllWebtoonList() {
-        return webtoonRepository.findAll();
+    public List<WebtoonDTO> getWebtoonList() {
+        List<WebtoonDTO> webtoonDTOList = new ArrayList<>();
+
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders header = new HttpHeaders();
+            HttpEntity<?> entity = new HttpEntity<>(header);
+            String url = "https://korea-webtoon-api.herokuapp.com";
+            String com = "naver";
+
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "/?service=" + com + "&updateDay=mon").build();
+
+            ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
+
+            ArrayList<Map> webtoonsList = (ArrayList<Map>) resultMap.getBody().get("webtoons");
+            for (Map<String, Object> webtoonData : webtoonsList) {
+                // BookDTO 생성 코드
+                WebtoonDTO webtoonDTO = createWebtoonDTOFromMap(webtoonData);
+                webtoonDTOList.add(webtoonDTO);
+            }
+
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            System.out.println(e.toString());
+            // 예외 처리 로직 추가
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            // 예외 처리 로직 추가
+        }
+
+        return webtoonDTOList;
     }
 
-    public void save(String title, String img, String author)
-    {
-        Webtoon  webtoon = new Webtoon();
-        webtoon.setTitle(title);
-        webtoon.setImageUrl(img);
-        webtoon.setAuthor(author);
-        this.webtoonRepository.save(webtoon);
+    private WebtoonDTO createWebtoonDTOFromMap(Map<String, Object> webtoonData) {
+        try {
+            return WebtoonDTO.builder()
+                    .id((String) webtoonData.get("id"))
+                    .title((String) webtoonData.get("title"))
+                    .author((String) webtoonData.get("author"))
+                    .img((String) webtoonData.get("img"))
+                    .updateDays((List<String>) webtoonData.get("updateDays"))
+                    .searchKeyword((String)webtoonData.get("searchKeyword"))
+                    .build();
+        } catch (Exception e) {
+            // 예외 처리
+            e.printStackTrace();
+            return null;
+        }
     }
 }
+
+

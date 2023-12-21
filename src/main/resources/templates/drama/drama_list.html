@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html lang="en">
 
 <head>
@@ -77,18 +76,17 @@
             transform: rotate(-90deg);
         }
     </style>
-=======
+
 <html lang="ko">
 <head>
     <link rel="stylesheet" type="text/css" th:href="@{/dramaList.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <meta charset="UTF-8">
     <title>한국 TV 프로그램 인기 순위</title>
->>>>>>> 779c07e8f86e7cae177763d5cd041eed40372c96
 </head>
 
 <body>
-<<<<<<< HEAD
+
 <!-- Swiper -->
 <div class="swiper mySwiper">
     <div class="swiper-wrapper">
@@ -101,7 +99,6 @@
         <div class="swiper-slide">Slide 7</div>
         <div class="swiper-slide">Slide 8</div>
         <div class="swiper-slide">Slide 9</div>
-=======
 <div class="swiper-container">
     <div class="swiper-wrapper">
         <div th:each="drama : ${dramaList}" class="swiper-slide">
@@ -110,20 +107,16 @@
                 <div class="slide-caption" th:text="${drama.title}"></div>
             </a>
         </div>
->>>>>>> 779c07e8f86e7cae177763d5cd041eed40372c96
     </div>
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
     <div class="swiper-pagination"></div>
-<<<<<<< HEAD
     <div class="autoplay-progress">
         <svg viewBox="0 0 48 48">
             <circle cx="24" cy="24" r="20"></circle>
         </svg>
         <span></span>
     </div>
-=======
->>>>>>> 779c07e8f86e7cae177763d5cd041eed40372c96
 </div>
 
 <!-- Swiper JS -->
@@ -131,7 +124,6 @@
 
 <!-- Initialize Swiper -->
 <script>
-<<<<<<< HEAD
     const progressCircle = document.querySelector(".autoplay-progress svg");
     const progressContent = document.querySelector(".autoplay-progress span");
     var swiper = new Swiper(".mySwiper", {
@@ -157,7 +149,6 @@
         }
     });
 </script>
-=======
     var swiper = new Swiper(".swiper-container", {
       pagination: {
         el: ".swiper-pagination",
@@ -179,7 +170,6 @@
         </li>
     </ul>
 </div>
->>>>>>> 779c07e8f86e7cae177763d5cd041eed40372c96
 </body>
 
 </html>
