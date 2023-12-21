@@ -20,15 +20,12 @@
 <body layout:fragment="content">
 <div class="swiper mySwiper">
     <div class="swiper-wrapper">
-        <div class="swiper-slide" >
-            <div th:each="bookDTO : ${bookDTOList}">
-                <img th:src="${bookDTO.getCover()}">
-                <div th:text="${bookDTO.getTitle()}"></div>
+        <div class="swiper-slide" th:each="bestSellerList : ${bestSellerListList}">
+            <div th:each="bestSeller : ${bestSellerList}">
+                <img th:src="${bestSeller.getCover()}">
+                <div th:text="${bestSeller.getTitle()}"></div>
             </div>
         </div>
-        <div class="swiper-slide">Slide 2</div>
-<!--        <div class="swiper-slide">Slide 3</div>-->
-<!--        <div class="swiper-slide">Slide 4</div>-->
     </div>
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>

@@ -33,13 +33,17 @@ public class BookController {
 
     @GetMapping("/list")
     public String getAPI(Model model) {
-        List<BookDTO> bookDTOList = bookService.getBookList();
-        model.addAttribute("bookDTOList", bookDTOList);
-        System.out.println(bookDTOList.get(0).getTitle());
-        System.out.println(bookDTOList.get(0).getAuthor());
-        System.out.println(bookDTOList.get(0).getIsbn());
-        System.out.println(bookDTOList.get(0).getPubDate());
-        System.out.println(bookDTOList.get(0).getPriceStandard());
+        List<BookDTO> bestSellerList = bookService.getBestSellerList();
+        List<List<BookDTO>> bestSellerListList = new ArrayList<>();
+        int startIndex = 0;
+        int endIndex = 5;
+        for (int i = 1; i < 7; i++) {
+            bestSellerListList.add(bestSellerList.subList(startIndex, Math.min(endIndex, bestSellerList.size())));
+            startIndex+=5;
+            endIndex+=5;
+        }
+        model.addAttribute("bestSellerListList", bestSellerListList);
         return "book/bookList";
     }
+
 }
