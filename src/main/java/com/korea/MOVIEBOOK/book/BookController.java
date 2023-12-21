@@ -32,8 +32,14 @@ public class BookController {
     }
 
     @GetMapping("/list")
-    public String getAPI() {
-        bookService.getBookList();
+    public String getAPI(Model model) {
+        List<BookDTO> bookDTOList = bookService.getBookList();
+        model.addAttribute("bookDTOList", bookDTOList);
+        System.out.println(bookDTOList.get(0).getTitle());
+        System.out.println(bookDTOList.get(0).getAuthor());
+        System.out.println(bookDTOList.get(0).getIsbn());
+        System.out.println(bookDTOList.get(0).getPubDate());
+        System.out.println(bookDTOList.get(0).getPriceStandard());
         return "book/bookList";
     }
 }

@@ -1,13 +1,12 @@
 package com.korea.MOVIEBOOK.Drama;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.korea.MOVIEBOOK.dramaReview.Review;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,7 +25,8 @@ public class Drama {
     private String productionCompany;   // 제작사
     private String Director;    // 감독
     private String viewingRating;   // 연령등급
+    private int rating;
 
-
-
+    @OneToMany(mappedBy = "drama", cascade = CascadeType.ALL)
+    private List<Review> reviews;
 }
