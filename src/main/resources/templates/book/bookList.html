@@ -1,4 +1,4 @@
-<html layout:decorate="~{layout2}">
+-<html layout:decorate="~{layout2}">
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <style>
@@ -20,15 +20,15 @@
 <body layout:fragment="content">
 <div class="swiper mySwiper">
     <div class="swiper-wrapper">
-        <div class="swiper-slide">Slide 1</div>
+        <div class="swiper-slide" >
+            <div th:each="bookDTO : ${bookDTOList}">
+                <img th:src="${bookDTO.getCover()}">
+                <div th:text="${bookDTO.getTitle()}"></div>
+            </div>
+        </div>
         <div class="swiper-slide">Slide 2</div>
-        <div class="swiper-slide">Slide 3</div>
-        <div class="swiper-slide">Slide 4</div>
-        <div class="swiper-slide">Slide 5</div>
-        <div class="swiper-slide">Slide 6</div>
-        <div class="swiper-slide">Slide 7</div>
-        <div class="swiper-slide">Slide 8</div>
-        <div class="swiper-slide">Slide 9</div>
+<!--        <div class="swiper-slide">Slide 3</div>-->
+<!--        <div class="swiper-slide">Slide 4</div>-->
     </div>
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
@@ -38,7 +38,6 @@
         <div class="swiper-slide" style="display:flex; flex-direction: column; font-size: 18px; justify-content: center;
                 align-items: center; white-space : nowrap;">
             <div class="list" style="display : flex; color : #FFF; margin-bottom : 20px; margin-top : 10px;">
-
                 <div class="top-list" style="width : 184px; margin-right : 20px; margin-left : 20px;">
                     <div class="item" style="text-align : center;">
                         <div class="top-info"

@@ -10,7 +10,7 @@
 <body>
 <div class="layout-co">
     <div class="layout">
-        <div class="logo" style="margin-top : 4%; font-size : xx-large;">
+        <a class="logo" style="margin-top : 4%; font-size : xx-large;" href="/">
             <div class="logo-top">
                 <span style="color : #fbd7ed;">무비</span>
                 <span style="color : #FFFFFF; ">MOVIE</span>
@@ -19,7 +19,7 @@
                 <span style="color : #FFFFFF;">BOOK</span>
                 <span style="color : #fbd7ed; margin-left : 5px;">부비</span>
             </div>
-        </div>
+        </a>
         <div class="login" style="margin: 10% 0% 0% 14%; font-size : 14px; width : 27%;">
             <img src="/conin.png" style="width : 15px; margin-left : 10%;">
             <a style="color : #FFF;" href="">코인충전</a>
@@ -33,10 +33,10 @@
             <a class="category" href="/movie">영화</a>
             <span class="category-bar" >|</span>
             <a class="category" th:href="@{/drama/dramaList}">TV</a>
-            <span class="category-bar" >|</span>
+            <span class="category-bar">|</span>
             <a class="category" href="/book/mainPage">책</a>
             <span class="category-bar" >|</span>
-            <a class="category" href="#">웹툰</a>
+            <a class="category" href="/webtoon/list">웹툰</a>
         </li>
     </div>
     <div class="slider-wrap">
@@ -56,7 +56,6 @@
         <div class="swiper-wrapper">
             <div class="swiper-slide" style="display:flex; flex-direction : column; font-size: 18px; justify-content: center;
                 align-items: center; white-space : nowrap;">
-
                 <div style="width : 100%; text-align : left;">
                     <span style="color : white; font-size : 20px; font-weight : bold; margin-left : 5%;">영화 TOP 5</span>
                 </div>

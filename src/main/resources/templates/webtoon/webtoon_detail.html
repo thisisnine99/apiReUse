@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout2}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webtoonDetail.css}">
+</head>
+<body layout:fragment="content">
+<!-- 웹툰 상세 정보 출력 -->
+<div th:if="${webtoonDTO.isPresent()}">
+    <img th:src="${webtoonDTO.get().getImg()}" alt="Webtoon Image">
+    <div th:text="${webtoonDTO.get().getWebtoonId()}"></div>
+    <div th:text="${webtoonDTO.get().getTitle()}"></div>
+    <div th:text="${webtoonDTO.get().getAuthor()}"></div>
+    <!-- 기타 정보 출력 -->
+</div>
+
+</body>
+</html>
