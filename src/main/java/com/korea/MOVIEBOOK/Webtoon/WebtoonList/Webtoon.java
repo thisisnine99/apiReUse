@@ -5,22 +5,30 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
 public class Webtoon {
 
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String _id;
 
-    @Column(length = 30)
+    private Long webtoonId;
+
     private String title;
-
-    private String imageUrl;
 
     private String author;
 
-    private String updateDay;
+    private String img;
+
+    @ElementCollection
+    private List<String> updateDays;
+
+    private String searchKeyword;
+
+    private String detailUrl;
 
 }

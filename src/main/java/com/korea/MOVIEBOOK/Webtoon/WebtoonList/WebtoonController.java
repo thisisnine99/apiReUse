@@ -1,13 +1,18 @@
 package com.korea.MOVIEBOOK.Webtoon.WebtoonList;
 
 import com.korea.MOVIEBOOK.Webtoon.Day;
+import com.korea.MOVIEBOOK.book.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.data.repository.util.ClassUtils.ifPresent;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,7 +29,7 @@ public class WebtoonController {
         for (Day value : values) {
             List<WebtoonDTO> webtoonDTOList = webtoonService.getWebtoonList(String.valueOf(value));
             model.addAttribute("webtoonDTOList", webtoonDTOList);
-            System.out.println(webtoonDTOList.get(0).getId());
+            System.out.println(webtoonDTOList.get(0).get_id());
             System.out.println(webtoonDTOList.get(0).getWebtoonId());
             System.out.println(webtoonDTOList.get(0).getTitle());
             System.out.println(webtoonDTOList.get(0).getAuthor());
@@ -39,4 +44,19 @@ public class WebtoonController {
     }
 
 
+    @RequestMapping(value = "/add", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<String> addWebtoon(@RequestBody WebtoonDTO webtoonDTO) {
+        webtoonService.saveWebtoonFromDTO(webtoonDTO);
+        return ResponseEntity.ok("Webtoon added successfully");
+    }
+
+
+    @GetMapping("/detail/{webtoonId}")
+    public String WebtoonDetail(Model model, @PathVariable Long webtoonId) {
+        Optional<Webtoon> webtoonDTO = webtoonService.createSampleWebtoonDetail(webtoonId);
+        model.addAttribute("webtoonDTO", webtoonDTO);
+        return "webtoon/webtoon_detail";
+    }
 }
+
+

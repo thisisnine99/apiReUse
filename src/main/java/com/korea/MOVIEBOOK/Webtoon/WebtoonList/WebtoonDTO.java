@@ -11,16 +11,21 @@ import java.util.List;
 @Builder
 public class WebtoonDTO {
 
-    private List<List<String>> listOfLists;
 
-    //    public static class WebtoonData {
-    private String id;
+    private String _id;
+
     private Long webtoonId;
+
     private String title;
+
     private String author;
+
     private String img;
+
     private List<String> updateDays;
+
     private String searchKeyword;
+
     private String detailUrl;
-//    }
+
 }
