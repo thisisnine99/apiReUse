@@ -1,4 +1,4 @@
-package com.korea.MOVIEBOOK.WebtoonPage;
+package com.korea.MOVIEBOOK.Webtoon.WebtoonList;
 
 
 import jakarta.persistence.*;

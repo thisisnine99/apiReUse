@@ -1,15 +1,12 @@
-package com.korea.MOVIEBOOK.WebtoonPage;
+package com.korea.MOVIEBOOK.Webtoon.WebtoonList;
 
 
-import com.korea.MOVIEBOOK.book.BookDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -25,7 +22,7 @@ import java.util.Map;
 public class WebtoonService {
     private final WebtoonRepository webtoonRepository;
 
-    public List<WebtoonDTO> getWebtoonList() {
+    public List<WebtoonDTO> getWebtoonList(String day) {
         List<WebtoonDTO> webtoonDTOList = new ArrayList<>();
 
         try {
@@ -34,8 +31,8 @@ public class WebtoonService {
             HttpEntity<?> entity = new HttpEntity<>(header);
             String url = "https://korea-webtoon-api.herokuapp.com";
             String com = "naver";
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "/?" + "perPage=20&service=naver").build();
 
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "/?service=" + com + "&updateDay=mon").build();
 
             ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
 
@@ -60,16 +57,19 @@ public class WebtoonService {
     private WebtoonDTO createWebtoonDTOFromMap(Map<String, Object> webtoonData) {
         try {
             return WebtoonDTO.builder()
-                    .id((String) webtoonData.get("id"))
+                    .id((String) webtoonData.get("_id"))
+                    .webtoonId((Long) webtoonData.get("webtoonId"))
                     .title((String) webtoonData.get("title"))
                     .author((String) webtoonData.get("author"))
                     .img((String) webtoonData.get("img"))
                     .updateDays((List<String>) webtoonData.get("updateDays"))
                     .searchKeyword((String)webtoonData.get("searchKeyword"))
+                    .detailUrl((String)webtoonData.get("detailUrl"))
                     .build();
         } catch (Exception e) {
             // 예외 처리
             e.printStackTrace();
+            System.out.println("id================>" + (String)webtoonData.get("_id"));
             return null;
         }
     }
