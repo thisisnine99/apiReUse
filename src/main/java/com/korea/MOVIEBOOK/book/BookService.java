@@ -15,7 +15,6 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -23,36 +22,78 @@ import java.util.*;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
-public List<BookDTO> getBestSellerList() {
-    List<BookDTO> bookDTOList = new ArrayList<>();
-    try {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders header = new HttpHeaders();
-        HttpEntity<?> entity = new HttpEntity<>(header);
-        String url = "http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbdlrjsrn81027001&QueryType=Bestseller&MaxResults=30&start=1&SearchTarget=Book&output=JS&Version=20131101";
-        UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
 
-        ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
-        // 여기서 resultMap으로 부터 받은 데이터를 가공
+    private void getAPI(String command) {
+        //  기본 url에 덧붙일 url 명령어를 넣으면 api를 사용해서 이미 db에있는지 체크하고 없다면 db에 저장해주는 메서드.
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders header = new HttpHeaders();
+            HttpEntity<?> entity = new HttpEntity<>(header);
+            String url = "http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbdlrjsrn81027001";
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + command).build();
 
-        ArrayList<Map<String, Object>> bookList = (ArrayList<Map<String, Object>>) resultMap.getBody().get("item");
+            ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
 
-        for (Map<String, Object> bookData : bookList) {
-            // BookDTO 생성 코드
-            BookDTO bookDTO = createBookDTOFromMap(bookData);
-            bookDTOList.add(bookDTO);
+            ArrayList<Map<String, Object>> bookList = (ArrayList<Map<String, Object>>) resultMap.getBody().get("item");
+            for (Map<String, Object> bookData : bookList) {
+                if (checkDuplicate((String) bookData.get("isbn"))) {
+                    saveBook(bookData);
+                    System.out.println("============================= 책 추가됨 =============================");
+                }
+            }
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            // 예외 처리
+            e.printStackTrace();
+        } catch (Exception e) {
+            // 예외 처리
+            e.printStackTrace();
         }
-    } catch (HttpClientErrorException | HttpServerErrorException e) {
-        // 예외 처리
-        e.printStackTrace();
-    } catch (Exception e) {
-        // 예외 처리
-        e.printStackTrace();
     }
-    return bookDTOList;
-}
+    public void addBestSeller() {
+        String command = "&QueryType=Bestseller&MaxResults=30&start=1&Cover=Big&SearchTarget=Book&output=JS&Version=20131101";
+        getAPI(command);
+    }
 
-    private BookDTO createBookDTOFromMap(Map<String, Object> bookData) {
+    public List<Book> getBestSellerList() {
+        //  db에 있는 책들중 bestSeller들만 추려서 List를 리턴하는 함수
+        List<Book> bookList = bookRepository.findAll();
+        List<Book> bestSellerList = new ArrayList<>();
+        for (Book book : bookList) {
+            if (book.getBestRank() != null) {
+                bestSellerList.add(book);
+            }
+        }
+        return bestSellerList;
+    }
+
+    private Boolean checkDuplicate(String isbn) {
+        //  이미 DB에 저장되어있는 책인지 확인하는 함수
+        List<Book> bookList = bookRepository.findAll();
+        boolean answer = true;
+        for (Book book : bookList) {
+            if (book.getIsbn().equals(isbn)) {
+                answer = false;
+                break;
+            }
+        }
+        return answer;
+    }
+    private void saveBook(Map<String, Object> bookData) {
+        //  book객체를 db에 저장하는 함수
+        Book book = new Book();
+        book.setTitle((String) bookData.get("title"));
+        book.setAuthor((String) bookData.get("author"));
+        book.setDescription((String) bookData.get("description"));
+        book.setIsbn((String) bookData.get("isbn"));
+        book.setIsbn13((String) bookData.get("isbn13"));
+        book.setCover((String) bookData.get("cover"));
+        book.setPublisher((String) bookData.get("publisher"));
+        book.setPricestandard((Integer) bookData.get("priceStandard"));
+        book.setBestRank((Integer) bookData.get("bestRank"));
+        book.setPubdate(getLocalDate(bookData.get("pubDate")));
+        bookRepository.save(book);
+    }
+    private BookDTO createBookDTO(Map<String, Object> bookData) {
         try {
             return BookDTO.builder()
                     .title((String) bookData.get("title"))
@@ -60,10 +101,11 @@ public List<BookDTO> getBestSellerList() {
                     .description((String) bookData.get("description"))
                     .isbn((String) bookData.get("isbn"))
                     .isbn13((String) bookData.get("isbn13"))
-                    .pubDate(getLocalDate(bookData.get("pubDate")))
-                    .priceStandard(getIntegerValue(bookData.get("priceStandard")))
                     .cover((String) bookData.get("cover"))
                     .publisher((String) bookData.get("publisher"))
+                    .priceStandard((Integer) bookData.get("priceStandard"))
+                    .bestRank((Integer) bookData.get("bestRank"))
+                    .pubDate(getLocalDate(bookData.get("pubDate")))
                     .build();
         } catch (Exception e) {
             // 예외 처리
@@ -73,22 +115,10 @@ public List<BookDTO> getBestSellerList() {
     }
 
     private LocalDate getLocalDate(Object dateObj) {
-        // Integer로 변환하여 반환하는 메서드
-        // 예외 처리 필요
+        //  String으로 받은 날짜 데이터를 LocalDate타입으로 변경해주는 함수
         String dateString = (String) dateObj;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate pubDate = LocalDate.parse(dateString, formatter);
         return pubDate;
     }
-
-    private int getIntegerValue(Object value) {
-        // Integer로 변환하여 반환하는 메서드
-        // 예외 처리 필요
-        int pricestandard = 0;
-        if (value instanceof Integer) {
-            pricestandard = (int) value;
-        }
-        return pricestandard;
-    }
-
 }
