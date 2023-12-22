@@ -1,4 +1,5 @@
-package com.korea.MOVIEBOOK.Movie;
+package com.korea.MOVIEBOOK.Movie.Date;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,21 +7,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Controller;
 
-import java.time.LocalDateTime;
-
-@Entity
-@Setter
 @Getter
-public class movie {
+@Setter
+@Entity
+public class MovieDate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long Id;
 
-    Long rank;  // 순위
+    String dailyDate;    // 날짜 (moviedaily에 data 유무 확인을 위한 칼럼)
 
-    String title;   // 영화제목
-
-    String date; // 조회일자
 }

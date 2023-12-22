@@ -1,26 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout2}">
 <head>
-    <meta charset="utf-8"/>
-    <title>상세 페이지</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-    <!-- Link Swiper's CSS -->
+    <meta charset="UTF-8">
+    <title>드라마 상세 정보</title>
 </head>
-<body>
-    <div class="swiper mySwiper">
-    <div class="swiper-wrapper">
-        <!-- Thymeleaf를 사용하여 백엔드에서 전달한 엔터티 정보를 표시 -->
-        <div th:each="drama : ${dramaList}" class="swiper-slide" style="overflow : hidden;">
-            <img th:src="@{${drama.imageUrl}}" alt="Drama Image">
-            <div class="slide-caption" th:text="${drama.title}"></div>
-            <div class="additional-info">
-                <p th:text="${drama.jenre}"></p>
-                <p th:text="${drama.releaseDate}"></p>
-                <p th:text="${drama.productionCompany}"></p>
-                <p th:text="${drama.director}"></p>
-                <p th:text="${drama.viewingRating}"></p>
-            </div>
-        </div>
-</body>
 </html>
