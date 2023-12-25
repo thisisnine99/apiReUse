@@ -1,21 +1,11 @@
 package com.korea.MOVIEBOOK.book;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.*;
 
@@ -35,7 +25,7 @@ public class BookController {
     public String getAPI(Model model) {
         List<Book> bestSellerList = bookService.getBestSellerList();
         if (bestSellerList.isEmpty()) {
-            bookService.addBestSeller();
+            bookService.getBestSeller();
             bestSellerList = bookService.getBestSellerList();
         }
         List<List<Book>> bestSellerListList = new ArrayList<>();

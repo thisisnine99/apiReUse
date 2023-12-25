@@ -37,6 +37,22 @@
     </div>
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
+<!--    <div class="swiper-pagination"></div>-->
+</div>
+<div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide" th:each="bestSellerList : ${bestSellerListList}">
+            <a th:each="bestSeller : ${bestSellerList}" th:href="@{/book/detail}">
+                <div>
+                    <img th:src="${bestSeller.getCover()}">
+                    <p th:text="${bestSeller.getTitle()}" class="bookTitle"></p>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <!--    <div class="swiper-pagination"></div>-->
 </div>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>

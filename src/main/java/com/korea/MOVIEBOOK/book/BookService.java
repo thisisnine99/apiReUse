@@ -23,19 +23,19 @@ import java.util.*;
 public class BookService {
     private final BookRepository bookRepository;
 
-    private void getAPI(String command) {
+    private void getAPI(String url, String command) {
         //  기본 url에 덧붙일 url 명령어를 넣으면 api를 사용해서 이미 db에있는지 체크하고 없다면 db에 저장해주는 메서드.
         try {
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders header = new HttpHeaders();
             HttpEntity<?> entity = new HttpEntity<>(header);
-            String url = "http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbdlrjsrn81027001";
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + command).build();
 
             ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
 
             ArrayList<Map<String, Object>> bookList = (ArrayList<Map<String, Object>>) resultMap.getBody().get("item");
             for (Map<String, Object> bookData : bookList) {
+                System.out.println("=============query==========>" + (String) bookData.get("query"));
                 if (checkDuplicate((String) bookData.get("isbn"))) {
                     saveBook(bookData);
                     System.out.println("============================= 책 추가됨 =============================");
@@ -49,9 +49,20 @@ public class BookService {
             e.printStackTrace();
         }
     }
-    public void addBestSeller() {
+
+    public void getBook(String ketWord) {
+        String url = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=ttbdlrjsrn81027001";
+        String command = "&Query=" + ketWord + "&QueryType=Keyword&MaxResults=20&start=1&SearchTarget=Book&output=JS&Version=20131101";
+    }
+    public void getBestSeller() {
+        String url = "http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbdlrjsrn81027001";
         String command = "&QueryType=Bestseller&MaxResults=30&start=1&Cover=Big&SearchTarget=Book&output=JS&Version=20131101";
-        getAPI(command);
+        getAPI(url, command);
+    }
+    public void getNewList() {
+        String url = "http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbdlrjsrn81027001";
+        String command = "&QueryType=ItemNewAll&MaxResults=30&start=1&Cover=Big&SearchTarget=Book&output=JS&Version=20131101";
+        getAPI(url, command);
     }
 
     public List<Book> getBestSellerList() {
@@ -65,6 +76,19 @@ public class BookService {
         }
         return bestSellerList;
     }
+
+    public List<Book> getNewBookList() {
+        //  db에 있는 책들중 NewBook들만 추려서 List를 리턴하는 함수
+        List<Book> bookList = bookRepository.findAll();
+        List<Book> bestSellerList = new ArrayList<>();
+        for (Book book : bookList) {
+            if (book.getBestRank() != null) {
+                bestSellerList.add(book);
+            }
+        }
+        return bestSellerList;
+    }
+
 
     private Boolean checkDuplicate(String isbn) {
         //  이미 DB에 저장되어있는 책인지 확인하는 함수
