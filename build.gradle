@@ -44,9 +44,9 @@ dependencies {
 	implementation 'com.mysql:mysql-connector-j:8.0.33'
 	implementation 'org.jsoup:jsoup:1.14.3' // 현재(2023년 12월)의 최신 버전
 	implementation 'org.webjars:jquery:3.6.0'
-
-
 	implementation 'com.googlecode.json-simple:json-simple:1.1'	//	json
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE' // 현재 최신 버전을 확인하려면 Maven Central 또는 해당 라이브러리의 공식 문서를 참조하세요.
+
 }
 
 tasks.named('bootBuildImage') {

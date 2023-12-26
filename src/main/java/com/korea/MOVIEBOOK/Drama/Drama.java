@@ -17,15 +17,17 @@ public class Drama {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long id;
-    private String title;
-    private String imageUrl;
-    private String jenre;          // 장르
-    private LocalDate releaseDate;    // 개봉일
-    private String productionCompany;   // 제작사
-    private String Director;    // 감독
-    private String viewingRating;   // 연령등급
-    private int rating;
+    private Long id; // 고유 값
+    private String title; // 제목
+    private String imageUrl; // 포스터
+    private String genre; // 장르
+    private LocalDate releaseDate; // 개봉일
+    private String company; // 제작사
+    private String director; // 감독
+    private String viewingRating; // 연령등급
+    private String actor; // 배우
+    private int rating; // 평점
+    private int rank; // 순위
 
     @OneToMany(mappedBy = "drama", cascade = CascadeType.ALL)
     private List<Review> reviews;
