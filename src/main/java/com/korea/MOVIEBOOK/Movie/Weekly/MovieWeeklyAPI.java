@@ -1,8 +1,6 @@
-package com.korea.MOVIEBOOK.Movie.Movie.Daily;
+package com.korea.MOVIEBOOK.Movie.Weekly;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.korea.MOVIEBOOK.Movie.Movie.Daily.MovieDailyService;
-import com.korea.MOVIEBOOK.Movie.Movie.MovieAPI;
+import com.korea.MOVIEBOOK.Movie.MovieAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,19 +15,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 @Component
 @RequiredArgsConstructor
-public class MovieDailyAPI {
-
-    private final MovieDailyService movieDailyService;
+public class MovieWeeklyAPI {
     private final MovieAPI movieAPI;
-    LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-    String date = yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-    Integer gubun = 0;  // MovieDaily, MovieWeekly 구분 변수
-
-    public void movieDaily(String date) {
+    private final MovieWeeklyService movieWeeklyService;
+    public void movieWeekly(String date) {
 
         HashMap<String, Object> result = new HashMap<String, Object>();
         String key = "f53a4247c0c7eda74780f0c0b855d761";
@@ -39,9 +34,9 @@ public class MovieDailyAPI {
 
             HttpHeaders header = new HttpHeaders();
             HttpEntity<?> entity = new HttpEntity<>(header);
-            String url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json";
+            String url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.json";
 
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "?" + "key=" + key + "&targetDt=" + date).build();
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "?" + "key=" + key + "&targetDt=" + date + "&weekGb=0").build();
 
             ResponseEntity<String> df = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, String.class);
 
@@ -51,19 +46,19 @@ public class MovieDailyAPI {
             result.put("header", resultMap.getHeaders()); //헤더 정보 확인
             result.put("body", resultMap.getBody()); //실제 데이터 정보 확인
 
-            LinkedHashMap lm = (LinkedHashMap) resultMap.getBody().get("boxOfficeResult");
-            ArrayList<Map> dboxoffList = (ArrayList<Map>) lm.get("dailyBoxOfficeList");
+            LinkedHashMap wm = (LinkedHashMap) resultMap.getBody().get("boxOfficeResult");
+            ArrayList<Map> dboxoffList = (ArrayList<Map>) wm.get("weeklyBoxOfficeList");
 
             if (dboxoffList.size() < 10) {
-                movieDaily(date);
+                movieWeekly(date);
             }
             int i = 0;
             for (Map map : dboxoffList) {
-                String prdtYear = this.movieAPI.movieDetail((String) map.get("movieCd"), date, gubun);
-                this.movieAPI.kmdb((String) map.get("movieNm"), prdtYear, gubun);
-                this.movieDailyService.add(gubun, Long.parseLong((String) map.get("rank")), (String) map.get("movieNm"), Long.parseLong((String) map.get("audiAcc")), date);
+                String prdtYear = this.movieAPI.movieDetail((String) map.get("movieCd"), date, 1);
+                this.movieAPI.kmdb((String) map.get("movieNm"), prdtYear, 1);
+                this.movieWeeklyService.add(date, Long.parseLong((String) map.get("rank")), (String) map.get("movieNm"), Long.parseLong((String) map.get("audiAcc")));
                 i++;
-               System.out.println("=======i의값====" + i);
+                System.out.println("=======i의값====" + i);
             }
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
@@ -77,5 +72,4 @@ public class MovieDailyAPI {
             System.out.println(e.toString());
         }
     }
-
 }

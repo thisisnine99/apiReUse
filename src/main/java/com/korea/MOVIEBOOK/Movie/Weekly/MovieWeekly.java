@@ -1,16 +1,20 @@
-package com.korea.MOVIEBOOK.Movie.Movie.Daily;
+package com.korea.MOVIEBOOK.Movie.Weekly;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Setter
 @Getter
-public class MovieDaily {
+@Setter
+public class MovieWeekly {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
+    String year;                // 조회 일자(년)     - LocalDate
+
+    String week;                // 조회 일자(주)     - LocalDate
 
     Long rank;                  // 순위             - 영화 진흥원 API
 
@@ -40,5 +44,4 @@ public class MovieDaily {
 
     String imageUrl;            // 포스터 URL       - KMDb API
 
-    String date;                // 조회 일자        - LocalDate
 }

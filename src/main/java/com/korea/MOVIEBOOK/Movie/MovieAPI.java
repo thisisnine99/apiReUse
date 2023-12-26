@@ -1,7 +1,8 @@
-package com.korea.MOVIEBOOK.Movie.Movie;
+package com.korea.MOVIEBOOK.Movie;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.korea.MOVIEBOOK.Movie.Movie.Daily.MovieDailyService;
+import com.korea.MOVIEBOOK.Movie.Daily.MovieDailyService;
+import com.korea.MOVIEBOOK.Movie.Weekly.MovieWeeklyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class MovieAPI {
 
     private final MovieDailyService movieDailyService;
+    private final MovieWeeklyService movieWeeklyService;
 
     LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
     String date = yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -77,6 +79,8 @@ public class MovieAPI {
 
             if(gubun == 0){
                 this.movieDailyService.addKmdb(plotText, company, poster, date, movieNm);
+            } else if(gubun == 1){
+                this.movieWeeklyService.addKmdb(date, plotText, company, poster, movieNm);
             }
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
@@ -163,6 +167,8 @@ public class MovieAPI {
 
             if(gubun == 0){
                 this.movieDailyService.addDeail(movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm, date);
+            } else if(gubun == 1){
+                this.movieWeeklyService.addDeail(date, movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm);
             }
 
             return prdtYear+genre;
