@@ -2,5 +2,11 @@ package com.korea.MOVIEBOOK.book;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public interface BookRepository extends JpaRepository<Book, Long> {
+    Book findByIsbn13(String isbn13);
+    Book findByIsbn(String isbn);
+    List<Book> findByAddDate(LocalDate addDate);
 }
