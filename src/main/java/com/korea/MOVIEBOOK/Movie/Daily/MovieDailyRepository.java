@@ -1,4 +1,4 @@
-package com.korea.MOVIEBOOK.Movie.Movie.Daily;
+package com.korea.MOVIEBOOK.Movie.Daily;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,15 +1,11 @@
-package com.korea.MOVIEBOOK.Movie.Movie.Daily;
+package com.korea.MOVIEBOOK.Movie.Daily;
 
-import com.korea.MOVIEBOOK.Movie.Date.MovieDateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
 
 import java.util.*;
 
@@ -17,10 +13,6 @@ import java.util.*;
 @Service
 public class MovieDailyService {
     private final MovieDailyRepository movieDailyRepository;
-    private final MovieDateService movieDateService;
-
-    LocalDateTime today = LocalDateTime.now().minusDays(7);;
-    String today2 = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
     public void addKmdb(String plot, String company, String imageUrl, String date, String title) {
         MovieDaily movie = this.movieDailyRepository.findByDateAndTitle(date, title);
@@ -46,13 +38,11 @@ public class MovieDailyService {
             this.movieDailyRepository.save(movie);
     }
 
-    public void add(Integer gubun, Long rank, String title, Long audiAcc, String date) throws ParseException {
-        if(gubun == 0){
+    public void add(Integer gubun, Long rank, String title, Long audiAcc, String date){
             MovieDaily movie = this.movieDailyRepository.findByDateAndTitle(date, title);
             movie.setRank(rank);
             movie.setAudiAcc(audiAcc);
             this.movieDailyRepository.save(movie);
-        }
     }
     public void deleteDailyMovie(String date) {
         List<MovieDaily> movieDailyList = this.movieDailyRepository.findBydate(date);
