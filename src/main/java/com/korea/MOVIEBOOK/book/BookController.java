@@ -17,12 +17,7 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/mainPage")
-    public String mainPage() {
-        return "book/bookMainPage";
-    }
-
-    @GetMapping("/list")
-    public String getAPI(Model model) {
+    public String mainPage(Model model) {
         List<Book> bestSellerList = bookService.getBestSellerList();
         if (bestSellerList.isEmpty()) {
             bookService.getBestSeller();
@@ -38,7 +33,7 @@ public class BookController {
         }
         System.out.println(bestSellerListList.get(0).get(0).getTitle());
         model.addAttribute("bestSellerListList", bestSellerListList);
-        return "book/bookList";
+        return "book/bookMainPage";
     }
 
     @GetMapping("/detail")
