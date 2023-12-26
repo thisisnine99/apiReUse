@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Review List</title>
+</head>
+<body>
+
+<h2>코멘트<span th:text="${reviews[0].drama.id}"></span></h2>
+
+<!-- 리뷰 목록 표시 -->
+<ul>
+    <li th:each="review : ${reviews}">
+        <!-- 리뷰 제목을 클릭하면 해당 리뷰의 상세 페이지로 이동 -->
+        <a th:href="@{/reviews/detail/{id}(id=${review.id})}">
+            <span th:text="${review.title}"></span>
+        </a>
+    </li>
+</ul>
+
+<!-- 페이징 처리 -->
+<div>
+    <!-- 현재 페이지 정보 표시 -->
+    <p>현재 페이지: <span th:text="${currentPage}"></span></p>
+    <p>총 페이지: <span th:text="${totalPages}"></span></p>
+
+    <!-- 이전 페이지 링크 -->
+    <a th:if="${currentPage > 1}" th:href="@{'/drama/' + ${id} + '/review_list?page=' + ${currentPage - 1} + '&size=10'}">이전</a>
+
+    <!-- 다음 페이지 링크 -->
+    <a th:href="@{'/drama/' + ${id} + '/review_list?page=' + ${currentPage + 1} + '&size=10'}">다음</a>
+</div>
+</body>
+</html>
+
+
