@@ -1,13 +1,84 @@
 <!DOCTYPE html>
 <html lang="ko" layout:decorate="~{layout2}">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/Movie/movie.css">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/Movie/movieDaily.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
 <body>
-<div layout:fragment="content">
-    <h1>heloo</h1>
+<div layout:fragment="content" style="width : 100%; height : 30%;">
+    <div style="width : 70%; margin : auto;">
+        <div class="swiper-top" style="display : flex;">
+            <div style="text-align : left; ">
+                <span style="color : #000000; font-size : 18px; font-weight : bold; margin-bottom : 3px;">영화 TOP 10</span>
+            </div>
+            <div class="swiper-pagination" style="position : relative; top : 0px; width : 5%;"></div>
+        </div>
+        <div class="swiper mySwiper" style="width : 85%; margin-top : 10px;">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"
+                     style="display:flex; font-size: 18px; align-items: center; height : 100%;">
+                    <div class="dailyMovie" th:each="movieDaily : ${movieDaily}" th:if="${movieDaily.rank <= 5}">
+                        <div class="img" style="padding : 6px;">
+                            <span class="rank" th:text="${movieDaily.rank}"></span>
+                            <img th:src="${movieDaily.imageUrl}" th:if="${not #strings.isEmpty(movieDaily.imageUrl)}" >
+                            <img src="/no-img.png" th:if="${#strings.isEmpty(movieDaily.imageUrl)}" style="width : 213px; height : 303px;">
+                        </div>
+
+                        <!--                    <sapn th:text="${movieDaily.title}"></sapn>-->
+                        <!--                    <sapn th:text="${movieDaily.director}"></sapn>-->
+                        <!--                    <sapn th:text="${movieDaily.genre}"></sapn>-->
+                        <!--                    <sapn th:text="${movieDaily.releaseDate}"></sapn>-->
+                        <!--                    <sapn th:text="${movieDaily.audiAcc}"></sapn>-->
+                    </div>
+                </div>
+                <div class="swiper-slide"
+                     style="display:flex; font-size: 18px; align-items: center; height : 100%;">
+                    <div class="dailyMovie" th:each="movieDaily : ${movieDaily}" th:if="${5 < movieDaily.rank}">
+                        <div class="img" style="padding : 6px;">
+                            <span class="rank" th:text="${movieDaily.rank}"></span>
+                            <img th:src="${movieDaily.imageUrl}" th:if="${not #strings.isEmpty(movieDaily.imageUrl)}" >
+                            <img src="/no-img.png" th:if="${#strings.isEmpty(movieDaily.imageUrl)}" style="width : 213px; height : 303px;">
+                        </div>
+
+                        <!--                    <sapn th:text="${movieDaily.title}"></sapn>-->
+                        <!--                    <sapn th:text="${movieDaily.director}"></sapn>-->
+                        <!--                    <sapn th:text="${movieDaily.genre}"></sapn>-->
+                        <!--                    <sapn th:text="${movieDaily.releaseDate}"></sapn>-->
+                        <!--                    <sapn th:text="${movieDaily.audiAcc}"></sapn>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-button-prev" style="top : 30%; left : 15%;"></div>
+        <div class="swiper-button-next" style="top : 30%; right : 15%;"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+<!--        setTimeout(function() {-->
+<!--            if (!document.querySelector('.dailyMovie')) {-->
+<!--                alert("데이터 불러오는 중입니다.");-->
+<!--                location.reload();-->
+<!--            }-->
+<!--        }, 3000);-->
+
+        var swiper = new Swiper(".mySwiper", {
+          spaceBetween: 30,
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+          },
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+        });
+
+    </script>
 </div>
 </body>
 </html>
+
 
