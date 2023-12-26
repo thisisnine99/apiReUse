@@ -1,7 +1,5 @@
 package com.korea.MOVIEBOOK.Movie.Weekly;
 
-import com.korea.MOVIEBOOK.Movie.Daily.MovieDaily;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.text.ParseException;
@@ -9,10 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @RequiredArgsConstructor
 @Service
