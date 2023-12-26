@@ -17,6 +17,8 @@ public class MovieDate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long Id;
 
-    String dailyDate;    // 날짜 (moviedaily에 data 유무 확인을 위한 칼럼)
+    Integer year;    // 년도
+
+    Integer week;     // 주차
 
 }

@@ -1,4 +1,4 @@
-package com.korea.MOVIEBOOK.Movie.Movie;
+package com.korea.MOVIEBOOK.Movie.Movie.Daily;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -31,6 +31,8 @@ public class MovieDaily {
     String releaseDate;         // 개봉 일자        - 영화 진흥원 API
 
     String company;             // 제작사           - KMDb API
+
+    String nations;             // 제작 국가        - 영화 진흥원 API
 
     Long audiAcc;               // 누적 관객수      - 영화 진흥원 API
 
