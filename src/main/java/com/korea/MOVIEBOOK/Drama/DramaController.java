@@ -36,7 +36,7 @@ public class DramaController {
                 .filter(review -> review.getRating() != null) // rating이 null인 review는 제외
                 .mapToInt(Review::getRating) // 리뷰 객체에서 평점만 추출하여 정수 스트림 생성
                 .average() // 평점의 평균값 계산
-                .orElse(0.0); // 리뷰가 없을 경우 0.0출력
+                .orElse(0); // 리뷰가 없을 경우 0.0출력
         model.addAttribute("drama", drama); // model 객체에 drama 전달
         model.addAttribute("reviews", reviews); // model 객체에 reviews 전달
         model.addAttribute("newReview", new Review()); // model 객체에 new Review 전달

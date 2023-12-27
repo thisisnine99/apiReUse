@@ -46,6 +46,15 @@ public class ReviewService {
         return reviewRepository.findByDramaId(dramaId, pageable);
     }
 
+    public void updateReview(Review updateReview) {
+        Review existingReview = reviewRepository.findById(updateReview.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid review Id:" + updateReview.getId()));
+        existingReview.setTitle(updateReview.getTitle());
+        existingReview.setComment(updateReview.getComment());
+        existingReview.setRating(updateReview.getRating());
+        reviewRepository.save(existingReview);
+    }
+
 
 }
 
