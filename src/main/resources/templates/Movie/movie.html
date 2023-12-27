@@ -8,7 +8,7 @@
 </head>
 <body>
 <div layout:fragment="content" style="width : 100%; height : 30%;">
-    <div class="swiper-1">
+    <div class="swiper-1">   <!--        전일 날짜 기준 영화 top 10-->
         <div style="width : 1340px; margin : auto;">
             <div class="swiper-top" style="display : flex; white-space : nowrap;">
                 <div style="text-align : left; margin-left : 8%;">
@@ -22,7 +22,8 @@
                               style="color : #868e96; font-size : 15px;"></span>
                         <span style="color : #868e96; font-size : 15px;">기준</span>
                     </div>
-                    <div class="swiper-pagination swiper-pagination1" style="position : relative; width : 55%; margin-top : 5px;"></div>
+                    <div class="swiper-pagination swiper-pagination1"
+                         style="position : relative; width : 55%; margin-top : 5px;"></div>
                 </div>
                 <div class="swiper-wrapper">
                     <div class="swiper-slide"
@@ -37,8 +38,10 @@
                                      style="width : 213px; height : 303px;">
                             </div>
                             <div class="short-info" style="display : inline-grid; margin-left : 5px;">
-                                <span th:text="${#strings.length(movieDaily.title) > 17 ? #strings.substring(movieDaily.title, 0, 17) + '..' : movieDaily.title}"
+                                <span class="mv-title"
+                                      th:text="${#strings.length(movieDaily.title) > 17 ? #strings.substring(movieDaily.title, 0, 17) + '..' : movieDaily.title}"
                                       style="font-size : 17px; margin-bottom : 5px;"></span>
+                                <div class="mv-text" th:text="${movieDaily.title}"></div>
                                 <div class="short-kind">
                                     <span th:text="${movieDaily.genre}"
                                           style="color : #868e96; font-size : 15px;"></span>
@@ -66,8 +69,10 @@
                                      style="width : 213px; height : 303px;">
                             </div>
                             <div class="short-info" style="display : inline-grid; margin-left : 5px;">
-                                <span th:text="${#strings.length(movieDaily.title) > 17 ? #strings.substring(movieDaily.title, 0, 17) + '..' : movieDaily.title}"
+                                <span class="mv-title"
+                                      th:text="${#strings.length(movieDaily.title) > 17 ? #strings.substring(movieDaily.title, 0, 17) + '..' : movieDaily.title}"
                                       style="font-size : 17px; margin-bottom : 5px;"></span>
+                                <div class="mv-text" th:text="${movieDaily.title}"></div>
                                 <div class="short-kind">
                                     <span th:text="${movieDaily.genre}"
                                           style="color : #868e96; font-size : 15px;"></span>
@@ -86,10 +91,10 @@
                 </div>
             </div>
         </div>
-        <div class="swiper-button-prev swiper-button-prev1" style="left : 15%;  top : 30%; color : red;"></div>
-        <div class="swiper-button-next swiper-button-next1" style="right : 15%; top : 30%; color : red;"></div>
+        <div class="swiper-button-prev swiper-button-prev1" style="left : 15%;  top : 290px; color : red;"></div>
+        <div class="swiper-button-next swiper-button-next1" style="right : 15%; top : 290px; color : red;"></div>
     </div>
-    <div class="swiper-2">
+    <div class="swiper-2">   <!-- 저번주 top 10-->
         <div style="width : 1340px; margin : auto; margin-top : 40px;">
             <div class="swiper-top2" style="display : flex; white-space : nowrap;">
                 <div style="text-align : left; margin-left : 8%;">
@@ -113,8 +118,10 @@
                                      style="width : 213px; height : 303px;">
                             </div>
                             <div class="short-info" style="display : inline-grid; margin-left : 5px;">
-                                <span th:text="${#strings.length(movieWeekly.title) > 17 ? #strings.substring(movieWeekly.title, 0, 17) + '..' : movieWeekly.title}"
+                                <span class="mv-title"
+                                      th:text="${#strings.length(movieWeekly.title) > 17 ? #strings.substring(movieWeekly.title, 0, 17) + '..' : movieWeekly.title}"
                                       style="font-size : 17px; margin-bottom : 5px;"></span>
+                                <div class="mv-text" th:text="${movieWeekly.title}"></div>
                                 <div class="short-kind">
                                     <span th:text="${movieWeekly.genre}"
                                           style="color : #868e96; font-size : 15px;"></span>
@@ -142,8 +149,10 @@
                                      style="width : 213px; height : 303px;">
                             </div>
                             <div class="short-info" style="display : inline-grid; margin-left : 5px;">
-                                <span th:text="${#strings.length(movieWeekly.title) > 17 ? #strings.substring(movieWeekly.title, 0, 17) + '..' : movieWeekly.title}"
+                                <span class="mv-title"
+                                      th:text="${#strings.length(movieWeekly.title) > 17 ? #strings.substring(movieWeekly.title, 0, 17) + '..' : movieWeekly.title}"
                                       style="font-size : 17px; margin-bottom : 5px;"></span>
+                                <div class="mv-text" th:text="${movieWeekly.title}"></div>
                                 <div class="short-kind">
                                     <span th:text="${movieWeekly.genre}"
                                           style="color : #868e96; font-size : 15px;"></span>
@@ -162,8 +171,87 @@
                 </div>
             </div>
         </div>
-        <div class="swiper-button-prev swiper-button-prev2" style="left : 15%; top : 82%; color : red;"></div>
-        <div class="swiper-button-next swiper-button-next2" style="right : 15%; top : 82%; color : red;"></div>
+        <div class="swiper-button-prev swiper-button-prev2" style="left : 15%; top : 800px; color : red;"></div>
+        <div class="swiper-button-next swiper-button-next2" style="right : 15%; top : 800px; color : red;"></div>
+    </div>
+    <div class="swiper-3" style="margin-bottom : 54px;">   <!--  무비부비 좋아요 top 10-->
+        <div style="width : 1340px; margin : auto; margin-top : 40px;">
+            <div class="swiper-top3" style="display : flex; white-space : nowrap;">
+                <div style="text-align : left; margin-left : 8%;">
+                    <span style="color : #000000; font-size : 20px; font-weight : bold; margin-bottom : 3px;">무비부비 좋아요</span>
+                    <span style="color : #000000; font-size : 20px; font-weight : bold; margin-bottom : 3px;"> TOP 10</span>
+                </div>
+            </div>
+            <div class="swiper mySwiper3" style="width : 85%; margin-top : 10px;">
+                <div class="swiper-pagination3" style="position : relative;  margin-left : 94%; width : 5%;"></div>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"
+                         style="display:flex; font-size: 18px; align-items: center; height : 100%;">
+                        <div class="dailyMovie" style="display : grid;" th:each="movieWeekly : ${movieWeekList}"
+                             th:if="${movieWeekly.rank <= 5}">
+                            <div class="img" style="padding : 6px;">
+                                <span class="rank" th:text="${movieWeekly.rank}"></span>
+                                <img th:src="${movieWeekly.imageUrl}"
+                                     th:if="${not #strings.isEmpty(movieWeekly.imageUrl)}">
+                                <img src="/noimg.jpg" th:if="${#strings.isEmpty(movieWeekly.imageUrl)}"
+                                     style="width : 213px; height : 303px;">
+                            </div>
+                            <div class="short-info" style="display : inline-grid; margin-left : 5px;">
+                                <span class="mv-title"
+                                      th:text="${#strings.length(movieWeekly.title) > 17 ? #strings.substring(movieWeekly.title, 0, 17) + '..' : movieWeekly.title}"
+                                      style="font-size : 17px; margin-bottom : 5px;"></span>
+                                <div class="mv-text" th:text="${movieWeekly.title}"></div>
+                                <div class="short-kind">
+                                    <span th:text="${movieWeekly.genre}"
+                                          style="color : #868e96; font-size : 15px;"></span>
+                                    ·
+                                    <span th:text="${movieWeekly.nations}"
+                                          style="color : #868e96; font-size : 15px;"></span>
+                                </div>
+                                <div class="short-kind">
+                                    <span style="color : #868e96; font-size : 15px;">개봉일 </span>
+                                    <span th:text="${#strings.substring(movieWeekly.releaseDate, 0, 4) + '.' + #strings.substring(movieWeekly.releaseDate, 4, 6) + '.' + #strings.substring(movieWeekly.releaseDate, 6, 8)}"
+                                          style="color: #868e96; font-size: 15px;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide"
+                         style="display:flex; font-size: 18px; align-items: center; height : 100%;">
+                        <div class="dailyMovie" style="display : grid;" th:each="movieWeekly : ${movieWeekList}"
+                             th:if="${5 < movieWeekly.rank}">
+                            <div class="img" style="padding : 6px;">
+                                <span class="rank" th:text="${movieWeekly.rank}"></span>
+                                <img th:src="${movieWeekly.imageUrl}"
+                                     th:if="${not #strings.isEmpty(movieWeekly.imageUrl)}">
+                                <img src="/noimg.jpg" th:if="${#strings.isEmpty(movieWeekly.imageUrl)}"
+                                     style="width : 213px; height : 303px;">
+                            </div>
+                            <div class="short-info" style="display : inline-grid; margin-left : 5px;">
+                                <span class="mv-title"
+                                      th:text="${#strings.length(movieWeekly.title) > 17 ? #strings.substring(movieWeekly.title, 0, 17) + '..' : movieWeekly.title}"
+                                      style="font-size : 17px; margin-bottom : 5px;"></span>
+                                <div class="mv-text" th:text="${movieWeekly.title}"></div>
+                                <div class="short-kind">
+                                    <span th:text="${movieWeekly.genre}"
+                                          style="color : #868e96; font-size : 15px;"></span>
+                                    ·
+                                    <span th:text="${movieWeekly.nations}"
+                                          style="color : #868e96; font-size : 15px;"></span>
+                                </div>
+                                <div class="short-kind">
+                                    <span style="color : #868e96; font-size : 15px;">개봉일 </span>
+                                    <span th:text="${#strings.substring(movieWeekly.releaseDate, 0, 4) + '.' + #strings.substring(movieWeekly.releaseDate, 4, 6) + '.' + #strings.substring(movieWeekly.releaseDate, 6, 8)}"
+                                          style="color: #868e96; font-size: 15px;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-button-prev swiper-button-prev3" style="left : 15%; top : 1285px; color : red;"></div>
+        <div class="swiper-button-next swiper-button-next3" style="right : 15%; top : 1285px; color : red;"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
@@ -188,6 +276,18 @@
             navigation: {
                 nextEl: ".swiper-button-next2",
                 prevEl: ".swiper-button-prev2",
+            },
+        });
+
+        var swiper3 = new Swiper(".mySwiper3", {
+            spaceBetween: 30,
+            pagination: {
+                el: ".swiper-pagination3",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next3",
+                prevEl: ".swiper-button-prev3",
             },
         });
 

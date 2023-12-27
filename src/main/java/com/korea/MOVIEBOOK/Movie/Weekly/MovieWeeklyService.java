@@ -35,8 +35,9 @@ public class MovieWeeklyService {
         String weeks = String.valueOf(Integer.parseInt(date) - 7);
         String week = weeklydate(weeks);
         String year = weeks.substring(0,4);
-        MovieWeekly movieWeekly = this.movieWeeklyRepository.findByYearAndWeekAndTitle(year,week,title);
         String plotcontent = plot.replaceAll("!HS", "").replaceAll("!HE", "").replaceAll("\\s+", "");
+
+        MovieWeekly movieWeekly = this.movieWeeklyRepository.findByYearAndWeekAndTitle(year,week,title);
         movieWeekly.setPlot(plotcontent);
         movieWeekly.setCompany(company);
         movieWeekly.setImageUrl(imageUrl);
