@@ -16,6 +16,8 @@ public class Webtoon {
     @Id
     private String _id;
 
+    private Integer fanCount;
+
     private Long webtoonId;
 
     private String title;
