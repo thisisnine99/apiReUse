@@ -24,6 +24,7 @@
     </style>
 </head>
 <body layout:fragment="content">
+<!--베스트셀러-->
 <div class="swiper mySwiper">
     <div class="swiper-wrapper">
         <div class="swiper-slide" th:each="bestSellerList : ${bestSellerListList}">
@@ -39,13 +40,14 @@
     <div class="swiper-button-prev"></div>
 <!--    <div class="swiper-pagination"></div>-->
 </div>
+<!--주목할만한 신간-->
 <div class="swiper mySwiper">
     <div class="swiper-wrapper">
-        <div class="swiper-slide" th:each="bestSellerList : ${bestSellerListList}">
-            <a th:each="bestSeller : ${bestSellerList}" th:href="@{/book/detail}">
+        <div class="swiper-slide" th:each="newSpecialBookList : ${newSpecialBookListList}">
+            <a th:each="newSpecialBook : ${newSpecialBookList}" th:href="@{/book/detail}">
                 <div>
-                    <img th:src="${bestSeller.getCover()}">
-                    <p th:text="${bestSeller.getTitle()}" class="bookTitle"></p>
+                    <img th:src="${newSpecialBook.getCover()}">
+                    <p th:text="${newSpecialBook.getTitle()}" class="bookTitle"></p>
                 </div>
             </a>
         </div>

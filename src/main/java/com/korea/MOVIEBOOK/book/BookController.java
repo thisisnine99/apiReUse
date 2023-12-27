@@ -19,10 +19,7 @@ public class BookController {
     @GetMapping("/mainPage")
     public String mainPage(Model model) {
         List<Book> bestSellerList = bookService.getBestSellerList();
-        if (bestSellerList.isEmpty()) {
-            bookService.getBestSeller();
-            bestSellerList = bookService.getBestSellerList();
-        }
+        bestSellerList.sort(Comparator.comparing(Book::getBestRank));
         List<List<Book>> bestSellerListList = new ArrayList<>();
         int startIndex = 0;
         int endIndex = 5;
@@ -31,8 +28,18 @@ public class BookController {
             startIndex+=5;
             endIndex+=5;
         }
-        System.out.println(bestSellerListList.get(0).get(0).getTitle());
+        startIndex = 0;
+        endIndex = 5;
+        List<Book> newSpecialBookList = bookService.getNewSpecialBookList();
+        List<List<Book>> newSpecialBookListList = new ArrayList<>();
+        for (int i = 1; i <= newSpecialBookList.size()/5; i++) {
+            newSpecialBookListList.add(newSpecialBookList.subList(startIndex, Math.min(endIndex, newSpecialBookList.size())));
+            startIndex+=5;
+            endIndex+=5;
+        }
+        System.out.println("=================================== 새로고침 ===================================");
         model.addAttribute("bestSellerListList", bestSellerListList);
+        model.addAttribute("newSpecialBookListList", newSpecialBookListList);
         return "book/bookMainPage";
     }
 
