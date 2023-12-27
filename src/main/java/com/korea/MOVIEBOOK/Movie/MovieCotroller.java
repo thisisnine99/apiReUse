@@ -43,6 +43,7 @@ public class MovieCotroller {
         }
         if (movieWeekList.isEmpty()) {
             this.movieWeeklyAPI.movieWeekly(weeks);
+            movieWeeklySize();
         }
 
         LocalDateTime localDateTime = weeksago;
@@ -74,6 +75,25 @@ public class MovieCotroller {
         this.movieDailyService.deleteDailyMovie(date);
         movieDailyAPI.movieDaily(date);
         return movieDailySize();
+    }
+
+    public List<MovieWeekly> movieWeeklySize() throws ParseException {
+        List<MovieWeekly> movieWeeklyList = this.movieWeeklyService.findWeeklyMovie(weeks);
+        if(movieWeeklyList.isEmpty()) {
+            this.movieWeeklyAPI.movieWeekly(weeks);
+            movieWeeklyList = this.movieWeeklyService.findWeeklyMovie(weeks);
+            if(movieWeeklyList.size()<10){
+                movieDailyDelete();
+            }
+        }
+        return movieWeeklyList;
+    }
+
+    public List<MovieWeekly> movieWeeklyDelete() throws ParseException {
+        System.out.println("======재시작=====");
+        this.movieWeeklyService.deleteWeeklyMovie(weeks);
+        this.movieWeeklyAPI.movieWeekly(weeks);
+        return movieWeeklySize();
     }
 
     public static String getCurrentWeekOfMonth(Date date) {

@@ -1,5 +1,6 @@
 package com.korea.MOVIEBOOK.Movie.Weekly;
 
+import com.korea.MOVIEBOOK.Movie.Daily.MovieDaily;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.text.ParseException;
@@ -31,9 +32,9 @@ public class MovieWeeklyService {
     }
 
     public void addKmdb(String date, String plot, String company, String imageUrl, String title) throws ParseException {
-
-        String week = weeklydate(String.valueOf(Integer.parseInt(date) - 7));
-        String year = week.substring(0,4);
+        String weeks = String.valueOf(Integer.parseInt(date) - 7);
+        String week = weeklydate(weeks);
+        String year = weeks.substring(0,4);
         MovieWeekly movieWeekly = this.movieWeeklyRepository.findByYearAndWeekAndTitle(year,week,title);
         String plotcontent = plot.replaceAll("!HS", "").replaceAll("!HE", "").replaceAll("\\s+", "");
         movieWeekly.setPlot(plotcontent);
@@ -60,11 +61,22 @@ public class MovieWeeklyService {
 
     public void add(String date, Long rank, String title, Long audiAcc) throws ParseException {
         String week = weeklydate(date);
-        String year = week.substring(0,4);
+        String year = date.substring(0,4);
         MovieWeekly movieWeekly = this.movieWeeklyRepository.findByYearAndWeekAndTitle(year,week,title);
         movieWeekly.setRank(rank);
         movieWeekly.setAudiAcc(audiAcc);
         this.movieWeeklyRepository.save(movieWeekly);
+    }
+
+    public void deleteWeeklyMovie(String weeks) throws ParseException {
+        String week = weeklydate(weeks);
+        String year = week.substring(0,4);
+        List<MovieWeekly> movieWeeklyList = this.movieWeeklyRepository.findByYearAndWeek(year,week);
+        int i = 0;
+        while (i < movieWeeklyList.size()) {
+            this.movieWeeklyRepository.delete(movieWeeklyList.get(i));
+            i++;
+        }
     }
 
     public List<MovieWeekly> findWeeklyMovie(String weeks) throws ParseException {

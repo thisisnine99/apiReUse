@@ -14,14 +14,16 @@
                 <div style="text-align : left; margin-left : 8%;">
                     <span style="color : #000000; font-size : 20px; font-weight : bold; margin-bottom : 3px;">영화 TOP 10</span>
                 </div>
-                <div class="swiper-pagination swiper-pagination1" style="position : relative; top : 0px; width : 5%;"></div>
-                <div style="margin-left : 65%; margin-top : 3px;">
-                    <span th:text="${#strings.substring(movieDailyDate, 4, 6) + '.' + #strings.substring(movieDailyDate, 6, 8)}"
-                          style="color : #868e96; font-size : 15px;"></span>
-                    <span style="color : #868e96; font-size : 15px;">기준</span>
-                </div>
             </div>
             <div class="swiper mySwiper" style="width : 85%; margin-top : 10px;">
+                <div style="margin-left : 85%; margin-top : -3px; display : flex;">
+                    <div>
+                        <span th:text="${#strings.substring(movieDailyDate, 4, 6) + '.' + #strings.substring(movieDailyDate, 6, 8)}"
+                              style="color : #868e96; font-size : 15px;"></span>
+                        <span style="color : #868e96; font-size : 15px;">기준</span>
+                    </div>
+                    <div class="swiper-pagination swiper-pagination1" style="position : relative; width : 55%; margin-top : 5px;"></div>
+                </div>
                 <div class="swiper-wrapper">
                     <div class="swiper-slide"
                          style="display:flex; font-size: 18px; align-items: center; height : 100%;">
@@ -97,32 +99,32 @@
                 </div>
             </div>
             <div class="swiper mySwiper2" style="width : 85%; margin-top : 10px;">
-                <div class="swiper-pagination2" style="position : relative; top : 0px; width : 5%;"></div>
+                <div class="swiper-pagination2" style="position : relative;  margin-left : 94%; width : 5%;"></div>
                 <div class="swiper-wrapper">
                     <div class="swiper-slide"
                          style="display:flex; font-size: 18px; align-items: center; height : 100%;">
-                        <div class="dailyMovie" style="display : grid;" th:each="movieDaily : ${movieWeekList}"
-                             th:if="${movieDaily.rank <= 5}">
+                        <div class="dailyMovie" style="display : grid;" th:each="movieWeekly : ${movieWeekList}"
+                             th:if="${movieWeekly.rank <= 5}">
                             <div class="img" style="padding : 6px;">
-                                <span class="rank" th:text="${movieDaily.rank}"></span>
-                                <img th:src="${movieDaily.imageUrl}"
-                                     th:if="${not #strings.isEmpty(movieDaily.imageUrl)}">
-                                <img src="/noimg.jpg" th:if="${#strings.isEmpty(movieDaily.imageUrl)}"
+                                <span class="rank" th:text="${movieWeekly.rank}"></span>
+                                <img th:src="${movieWeekly.imageUrl}"
+                                     th:if="${not #strings.isEmpty(movieWeekly.imageUrl)}">
+                                <img src="/noimg.jpg" th:if="${#strings.isEmpty(movieWeekly.imageUrl)}"
                                      style="width : 213px; height : 303px;">
                             </div>
                             <div class="short-info" style="display : inline-grid; margin-left : 5px;">
-                                <span th:text="${#strings.length(movieDaily.title) > 17 ? #strings.substring(movieDaily.title, 0, 17) + '..' : movieDaily.title}"
+                                <span th:text="${#strings.length(movieWeekly.title) > 17 ? #strings.substring(movieWeekly.title, 0, 17) + '..' : movieWeekly.title}"
                                       style="font-size : 17px; margin-bottom : 5px;"></span>
                                 <div class="short-kind">
-                                    <span th:text="${movieDaily.genre}"
+                                    <span th:text="${movieWeekly.genre}"
                                           style="color : #868e96; font-size : 15px;"></span>
                                     ·
-                                    <span th:text="${movieDaily.nations}"
+                                    <span th:text="${movieWeekly.nations}"
                                           style="color : #868e96; font-size : 15px;"></span>
                                 </div>
                                 <div class="short-kind">
                                     <span style="color : #868e96; font-size : 15px;">개봉일 </span>
-                                    <span th:text="${#strings.substring(movieDaily.releaseDate, 0, 4) + '.' + #strings.substring(movieDaily.releaseDate, 4, 6) + '.' + #strings.substring(movieDaily.releaseDate, 6, 8)}"
+                                    <span th:text="${#strings.substring(movieWeekly.releaseDate, 0, 4) + '.' + #strings.substring(movieWeekly.releaseDate, 4, 6) + '.' + #strings.substring(movieWeekly.releaseDate, 6, 8)}"
                                           style="color: #868e96; font-size: 15px;"></span>
                                 </div>
                             </div>
@@ -130,28 +132,28 @@
                     </div>
                     <div class="swiper-slide"
                          style="display:flex; font-size: 18px; align-items: center; height : 100%;">
-                        <div class="dailyMovie" style="display : grid;" th:each="movieDaily : ${movieDailyList}"
-                             th:if="${5 < movieDaily.rank}">
+                        <div class="dailyMovie" style="display : grid;" th:each="movieWeekly : ${movieWeekList}"
+                             th:if="${5 < movieWeekly.rank}">
                             <div class="img" style="padding : 6px;">
-                                <span class="rank" th:text="${movieDaily.rank}"></span>
-                                <img th:src="${movieDaily.imageUrl}"
-                                     th:if="${not #strings.isEmpty(movieDaily.imageUrl)}">
-                                <img src="/noimg.jpg" th:if="${#strings.isEmpty(movieDaily.imageUrl)}"
+                                <span class="rank" th:text="${movieWeekly.rank}"></span>
+                                <img th:src="${movieWeekly.imageUrl}"
+                                     th:if="${not #strings.isEmpty(movieWeekly.imageUrl)}">
+                                <img src="/noimg.jpg" th:if="${#strings.isEmpty(movieWeekly.imageUrl)}"
                                      style="width : 213px; height : 303px;">
                             </div>
                             <div class="short-info" style="display : inline-grid; margin-left : 5px;">
-                                <span th:text="${#strings.length(movieDaily.title) > 17 ? #strings.substring(movieDaily.title, 0, 17) + '..' : movieDaily.title}"
+                                <span th:text="${#strings.length(movieWeekly.title) > 17 ? #strings.substring(movieWeekly.title, 0, 17) + '..' : movieWeekly.title}"
                                       style="font-size : 17px; margin-bottom : 5px;"></span>
                                 <div class="short-kind">
-                                    <span th:text="${movieDaily.genre}"
+                                    <span th:text="${movieWeekly.genre}"
                                           style="color : #868e96; font-size : 15px;"></span>
                                     ·
-                                    <span th:text="${movieDaily.nations}"
+                                    <span th:text="${movieWeekly.nations}"
                                           style="color : #868e96; font-size : 15px;"></span>
                                 </div>
                                 <div class="short-kind">
                                     <span style="color : #868e96; font-size : 15px;">개봉일 </span>
-                                    <span th:text="${#strings.substring(movieDaily.releaseDate, 0, 4) + '.' + #strings.substring(movieDaily.releaseDate, 4, 6) + '.' + #strings.substring(movieDaily.releaseDate, 6, 8)}"
+                                    <span th:text="${#strings.substring(movieWeekly.releaseDate, 0, 4) + '.' + #strings.substring(movieWeekly.releaseDate, 4, 6) + '.' + #strings.substring(movieWeekly.releaseDate, 6, 8)}"
                                           style="color: #868e96; font-size: 15px;"></span>
                                 </div>
                             </div>

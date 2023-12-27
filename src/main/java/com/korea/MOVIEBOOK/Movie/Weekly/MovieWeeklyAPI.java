@@ -52,13 +52,13 @@ public class MovieWeeklyAPI {
             if (dboxoffList.size() < 10) {
                 movieWeekly(date);
             }
-            int i = 0;
+            int j = 0;
             for (Map map : dboxoffList) {
-                String prdtYear = this.movieAPI.movieDetail((String) map.get("movieCd"), date, 1);
-                this.movieAPI.kmdb((String) map.get("movieNm"), prdtYear, 1);
+                String releaseDts = this.movieAPI.movieDetail((String) map.get("movieCd"), date, 1);
+                this.movieAPI.kmdb((String) map.get("movieNm"), releaseDts, 1);
                 this.movieWeeklyService.add(date, Long.parseLong((String) map.get("rank")), (String) map.get("movieNm"), Long.parseLong((String) map.get("audiAcc")));
-                i++;
-                System.out.println("=======i의값====" + i);
+                j++;
+                System.out.println("=======j의값====" + j);
             }
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
