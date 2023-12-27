@@ -55,4 +55,8 @@ public class MovieDailyService {
     public List<MovieDaily> findDailyMovie(String date){
         return this.movieDailyRepository.findBydate(date);
     }
+
+    public MovieDaily findmovie(String date, String title){
+        return this.movieDailyRepository.findByDateAndTitle(date,title);
+    }
 }

@@ -10,6 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +62,14 @@ public class MovieCotroller {
 
         return "Movie/movie";
     }
+
+    @PostMapping("movie/detail")
+    public String movieDetail(Model model, @RequestParam String date, @RequestParam String title){
+        MovieDaily movieDaily = this.movieDailyService.findmovie(date,title);
+        model.addAttribute("movieDailyDetail",movieDaily);
+
+        return "Movie/movie_detail";
+    }
     public List<MovieDaily> movieDailySize(){
         List<MovieDaily> movieDailyList = this.movieDailyService.findDailyMovie(date);
         if(movieDailyList.isEmpty()) {
@@ -83,7 +95,7 @@ public class MovieCotroller {
             this.movieWeeklyAPI.movieWeekly(weeks);
             movieWeeklyList = this.movieWeeklyService.findWeeklyMovie(weeks);
             if(movieWeeklyList.size()<10){
-                movieDailyDelete();
+                movieWeeklyDelete();
             }
         }
         return movieWeeklyList;

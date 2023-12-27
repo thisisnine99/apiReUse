@@ -31,10 +31,11 @@
      opacity: 0;
      transition: all ease 0.5s;
      margin-left : 13px;
-     margin-top : 25px;
+     margin-top : 5px;
      max-width : 200px;
    }
 
 .short-info:hover .mv-text {
     opacity: 1;
+    cursor : Default;
 }
