@@ -59,14 +59,15 @@ public class BookService {
     }
     public void getBestSeller() {
         String url = "http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbdlrjsrn81027001";
-        String command = "&QueryType=Bestseller&MaxResults=30&start=1&Cover=Big&SearchTarget=Book&output=JS&Version=20131101";
+        String command = "&QueryType=Bestseller&MaxResults=25&start=1&Cover=Big&SearchTarget=Book&output=JS&Version=20131101";
         getAPI(url, command, false);
+        System.out.println("======================== 베스트셀러도서추가 ========================");
     }
     public void getNewSpecialBook() {
         String url = "http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbdlrjsrn81027001";
-        String command = "&QueryType=ItemNewAll&MaxResults=30&start=1&Cover=Big&SearchTarget=Book&output=JS&Version=20131101";
+        String command = "&QueryType=ItemNewSpecial&MaxResults=25&start=1&Cover=Big&SearchTarget=Book&output=JS&Version=20131101";
         getAPI(url, command, true);
-        System.out.println("========================신간도서추가=============");
+        System.out.println("======================== 주목할만한신간도서추가 ========================");
     }
 
     public List<Book> getBestSellerList() {
@@ -89,16 +90,9 @@ public class BookService {
 //    여기서부터 수정해야함 여기 bookList를 만드는데 AddDate로해서 신간도서를 추가안하게됨.
     public List<Book> getNewSpecialBookList() {
         //  db에 있는 책들중 NewSpecialBook 들만 추려서 List를 리턴하는 함수
-        List<Book> bookList = bookRepository.findByAddDate(LocalDate.now());
-        if (bookList.isEmpty()) {
+        List<Book> newSpecialBookList = bookRepository.findByIsNewBookAndAddDate(true, LocalDate.now());
+        if (newSpecialBookList.isEmpty()) {
             getNewSpecialBook();
-        }
-        bookList = bookRepository.findByAddDate(LocalDate.now());
-        List<Book> newSpecialBookList = new ArrayList<>();
-        for (Book book : bookList) {
-            if (book.getIsNewBook()) {
-                newSpecialBookList.add(book);
-            }
         }
         return newSpecialBookList;
     }
