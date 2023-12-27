@@ -13,9 +13,10 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long id;
-    private String comment;
-    private Integer rating;
+    private Long id; // 고유 값
+    private String title; // 리뷰 제목
+    private String comment; // 리뷰 내용
+    private Integer rating; // 리뷰 평점
 
     @ManyToOne
     @JoinColumn(name = "drama_id")
