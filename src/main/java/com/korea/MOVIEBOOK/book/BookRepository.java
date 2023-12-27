@@ -9,4 +9,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Book findByIsbn13(String isbn13);
     Book findByIsbn(String isbn);
     List<Book> findByAddDate(LocalDate addDate);
+    List<Book> findByBestRankAndAddDate(Integer bestRank,LocalDate addDate);
+    List<Book> findByIsNewBookAndAddDate(Boolean isNew, LocalDate addDate);
 }
