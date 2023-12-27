@@ -1,6 +1,8 @@
-package com.korea.MOVIEBOOK.Movie.Movie;
+package com.korea.MOVIEBOOK.Movie;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.korea.MOVIEBOOK.Movie.Daily.MovieDailyService;
+import com.korea.MOVIEBOOK.Movie.Weekly.MovieWeeklyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,73 +21,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 @Component
 @RequiredArgsConstructor
 public class MovieAPI {
 
     private final MovieDailyService movieDailyService;
+    private final MovieWeeklyService movieWeeklyService;
+
     LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-    String date = "20231224";
-
-    public void movieDb(String date) {
-
-        HashMap<String, Object> result = new HashMap<String, Object>();
-        String key = "f53a4247c0c7eda74780f0c0b855d761";
-
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-
-            HttpHeaders header = new HttpHeaders();
-            HttpEntity<?> entity = new HttpEntity<>(header);
-            String url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json";
-
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "?" + "key=" + key + "&targetDt=" + date).build();
-
-            ResponseEntity<String> df = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, String.class);
-
-            //이 한줄의 코드로 API를 호출해 MAP타입으로 전달 받는다.
-            ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
-            result.put("statusCode", resultMap.getStatusCodeValue()); //http status code를 확인
-            result.put("header", resultMap.getHeaders()); //헤더 정보 확인
-            result.put("body", resultMap.getBody()); //실제 데이터 정보 확인
-
-            LinkedHashMap lm = (LinkedHashMap) resultMap.getBody().get("boxOfficeResult");
-            ArrayList<Map> dboxoffList = (ArrayList<Map>) lm.get("dailyBoxOfficeList");
-
-            if (dboxoffList.size() < 10) {
-                movieDb(date);
-            }
-int i = 0;
-            for (Map map : dboxoffList) {
-                String prdtYear = movieDetail((String) map.get("movieCd"), date);
-                kmdb((String) map.get("movieNm"), prdtYear);
-                this.movieDailyService.add(Long.parseLong((String) map.get("rank")), (String) map.get("movieNm"), Long.parseLong((String) map.get("audiAcc")), date);
-              i++;
-               System.out.println("=======i의값====" + i);
-            }
-
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            result.put("statusCode", e.getRawStatusCode());
-            result.put("body", e.getStatusText());
-            System.out.println(e.toString());
-
-        } catch (Exception e) {
-            result.put("statusCode", "999");
-            result.put("body", "excpetion오류");
-            System.out.println(e.toString());
+    String date = yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+    public void kmdb(String movieNm, String releaseDts, Integer gubun){
+        String releaseDt = releaseDts.substring(0,8); // genre
+        String nation = releaseDts.substring(8);
+        if ("한국".equals(nation)) {
+            nation = "대한민국";
         }
-    }
-
-    public void kmdb(String movieNm, String prodYear){
-        String prodyear = prodYear.substring(0,4); // genre
-        String genre = prodYear.substring(4);
 
         HashMap<String, Object> result = new HashMap<String, Object>();
         String jsonInString = "";
         String key = "390XVFE3E50ON75912O7";
-        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-        String date = yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -97,7 +51,7 @@ int i = 0;
 
             String url = "http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2&ServiceKey=";
 
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + key + "&detail=Y&title=" + movieNm + "&prodYear=" + prodyear + "&ratingGrade=" + genre).build();
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + key + "&detail=Y&title=" + movieNm + "&releaseDts=" + releaseDt + "&nation=" + nation).build();
 
 
             //이 한줄의 코드로 API를 호출해 MAP타입으로 전달 받는다.
@@ -126,7 +80,11 @@ int i = 0;
 
             String company = (String) ResultList.get(0).get("company");
 
-            this.movieDailyService.addKmdb(plotText, company, poster, date, movieNm);
+            if(gubun == 0){
+                this.movieDailyService.addKmdb(plotText, company, poster, date, movieNm);
+            } else if(gubun == 1){
+                this.movieWeeklyService.addKmdb(date, plotText, company, poster, movieNm);
+            }
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             result.put("statusCode", e.getRawStatusCode());
@@ -140,7 +98,7 @@ int i = 0;
         }
     }
 
-    public String movieDetail(String code, String date) {
+    public String movieDetail(String code, String date, Integer gubun) {
 
         HashMap<String, Object> result = new HashMap<String, Object>();
         String key = "f53a4247c0c7eda74780f0c0b855d761";
@@ -163,7 +121,15 @@ int i = 0;
             result.put("body", resultMap.getBody()); //실제 데이터 정보 확인
 
             LinkedHashMap movieDetail = (LinkedHashMap) resultMap.getBody().get("movieInfoResult");
+            if((LinkedHashMap) resultMap.getBody().get("movieInfoResult") == null){
+                System.out.println("===  movieInfoResult 문제발생 ===" );
+                this.movieDailyService.deleteDailyMovie(date);
+                System.out.println("재 시작중");
+            }
 
+            if((Map<String, Object>) movieDetail.get("movieInfo") == null){
+                System.out.println("=== movieInfo 문제발생 ===" );
+            }
             Map<String, Object> detailList = (Map<String, Object>) movieDetail.get("movieInfo");
 
             ArrayList<Map> actorsList = (ArrayList<Map>) detailList.get("actors");
@@ -180,8 +146,6 @@ int i = 0;
 
             String runtime = (String) detailList.get("showTm");
 
-            String prdtYear = (String) detailList.get("prdtYear");
-
             String movieNm = (String) detailList.get("movieNm");
 
             ArrayList<Map> genres = (ArrayList<Map>) detailList.get("genres");
@@ -193,9 +157,22 @@ int i = 0;
             String viewingRating = (String) audits.get(0).get("watchGradeNm");
 
             ArrayList<Map> directors = (ArrayList<Map>) detailList.get("directors");
-            String director = (String) directors.get(0).get("peopleNm");
-            this.movieDailyService.addDeail(movieNm, actors, runtime, genre, releaseDate, viewingRating, director, date);
-            return prdtYear+genre;
+            String director = "";
+            if(!directors.isEmpty()){
+                director = (String) directors.get(0).get("peopleNm");
+            }
+
+            ArrayList<Map> nations = (ArrayList<Map>) detailList.get("nations");
+            String nationNm = (String) nations.get(0).get("nationNm");
+
+
+            if(gubun == 0){
+                this.movieDailyService.addDeail(movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm, date);
+            } else if(gubun == 1){
+                this.movieWeeklyService.addDeail(date, movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm);
+            }
+
+            return releaseDate+nationNm;
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             result.put("statusCode", e.getRawStatusCode());
@@ -209,5 +186,4 @@ int i = 0;
         }
         return "";
     }
-
 }
