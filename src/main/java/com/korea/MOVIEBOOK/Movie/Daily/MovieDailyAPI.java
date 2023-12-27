@@ -57,8 +57,8 @@ public class MovieDailyAPI {
             }
             int i = 0;
             for (Map map : dboxoffList) {
-                String prdtYear = this.movieAPI.movieDetail((String) map.get("movieCd"), date, gubun);
-                this.movieAPI.kmdb((String) map.get("movieNm"), prdtYear, gubun);
+                String releaseDts = this.movieAPI.movieDetail((String) map.get("movieCd"), date, gubun);
+                this.movieAPI.kmdb((String) map.get("movieNm"), releaseDts, gubun);
                 this.movieDailyService.add(gubun, Long.parseLong((String) map.get("rank")), (String) map.get("movieNm"), Long.parseLong((String) map.get("audiAcc")), date);
                 i++;
                System.out.println("=======i의값====" + i);

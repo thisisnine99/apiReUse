@@ -30,9 +30,12 @@ public class MovieAPI {
 
     LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
     String date = yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-    public void kmdb(String movieNm, String prodYear, Integer gubun){
-        String prodyear = prodYear.substring(0,4); // genre
-        String genre = prodYear.substring(4);
+    public void kmdb(String movieNm, String releaseDts, Integer gubun){
+        String releaseDt = releaseDts.substring(0,8); // genre
+        String nation = releaseDts.substring(8);
+        if ("한국".equals(nation)) {
+            nation = "대한민국";
+        }
 
         HashMap<String, Object> result = new HashMap<String, Object>();
         String jsonInString = "";
@@ -48,7 +51,7 @@ public class MovieAPI {
 
             String url = "http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2&ServiceKey=";
 
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + key + "&detail=Y&title=" + movieNm + "&prodYear=" + prodyear + "&ratingGrade=" + genre).build();
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + key + "&detail=Y&title=" + movieNm + "&releaseDts=" + releaseDt + "&nation=" + nation).build();
 
 
             //이 한줄의 코드로 API를 호출해 MAP타입으로 전달 받는다.
@@ -143,8 +146,6 @@ public class MovieAPI {
 
             String runtime = (String) detailList.get("showTm");
 
-            String prdtYear = (String) detailList.get("prdtYear");
-
             String movieNm = (String) detailList.get("movieNm");
 
             ArrayList<Map> genres = (ArrayList<Map>) detailList.get("genres");
@@ -171,7 +172,7 @@ public class MovieAPI {
                 this.movieWeeklyService.addDeail(date, movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm);
             }
 
-            return prdtYear+genre;
+            return releaseDate+nationNm;
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             result.put("statusCode", e.getRawStatusCode());
