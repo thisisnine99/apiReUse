@@ -2,7 +2,7 @@
 <html lang="ko" layout:decorate="~{layout2}">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/dramaList2.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/dramaList.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
@@ -49,12 +49,12 @@
                                      style="width : 213px; height : 303px;">
                             </a>
                         </div>
-                        <div>
+                        <div style="margin-left: 7px;">
                             <a th:href="@{/drama/{id}(id=${drama.id})}">
-                                <p th:text="${drama.title}" style="font-weight: bold; margin-bottom: 5px;"></p>
+                                <p th:text="${drama.title}" style="font-size : 17px; margin-bottom : 5px;"></p>
                             </a>
-                            <p th:text="${drama.genre}"></p>
-                            <p th:text="${drama.releaseDate}"></p>
+                            <p th:text="${drama.genre}" style="color : #868e96; font-size : 15px;"></p>
+                            <p th:text="${drama.releaseDate}" style="color : #868e96; font-size : 15px;"></p>
                         </div>
                     </div>
                 </div>

@@ -21,7 +21,7 @@ public class Drama {
     private String title; // 제목
     private String imageUrl; // 포스터
     private String genre; // 장르
-    private LocalDate releaseDate; // 개봉일
+    private String releaseDate; // 개봉일
     private String company; // 제작사
     private String director; // 감독
     private String viewingRating; // 연령등급
@@ -31,4 +31,5 @@ public class Drama {
 
     @OneToMany(mappedBy = "drama", cascade = CascadeType.ALL)
     private List<Review> reviews;
+
 }

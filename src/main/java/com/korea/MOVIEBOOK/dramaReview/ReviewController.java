@@ -78,6 +78,16 @@ public class ReviewController {
         return "redirect:/drama/" + dramaId; // 해당 드라마 상세 페이지로 리다이렉트합니다.
     }
 
+    @GetMapping("/reviews/edit/{id}")
+    public String showEditReviewForm(@PathVariable Long id, Model model) {
+        Review review = reviewService.findReviewById(id);
+        model.addAttribute("review", review);
+        return "drama_review/review_edit";
+    }
 
-
+    @PostMapping("/reviews/update")
+    public String updateReview(@ModelAttribute Review updateReview) {
+        reviewService.updateReview(updateReview);
+        return "redirect:/reviews/detail/" + updateReview.getId();
+    }
 }
