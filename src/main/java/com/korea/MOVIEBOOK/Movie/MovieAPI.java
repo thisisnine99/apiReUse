@@ -30,6 +30,8 @@ public class MovieAPI {
 
     LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
     String date = yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+    LocalDateTime today = LocalDateTime.now();
+    String today2 = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     public void kmdb(String movieNm, String releaseDts, Integer gubun){
         String releaseDt = releaseDts.substring(0,8); // genre
         String nation = releaseDts.substring(8);
@@ -123,7 +125,11 @@ public class MovieAPI {
             LinkedHashMap movieDetail = (LinkedHashMap) resultMap.getBody().get("movieInfoResult");
             if((LinkedHashMap) resultMap.getBody().get("movieInfoResult") == null){
                 System.out.println("===  movieInfoResult 문제발생 ===" );
-                this.movieDailyService.deleteDailyMovie(date);
+                if(gubun == 0 ){
+                    this.movieDailyService.deleteDailyMovie(date);
+                } else {
+                    this.movieWeeklyService.deleteWeeklyMovie(today2);
+                }
                 System.out.println("재 시작중");
             }
 

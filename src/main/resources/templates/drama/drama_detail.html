@@ -41,13 +41,15 @@
             <a th:href="@{'/reviews/detail/' + ${review.id}}">
                 <span th:text="${review.title}"></span>
             </a>
-                <th:block th:if="${review.rating != null}">
-                <span th:each="star : ${#numbers.sequence(1, review.rating)}">&#9733;</span> <!-- 별 아이콘 출력 -->
-                <span th:text="${review.rating}"></span> <!-- 별점 숫자로 출력 -->
-                     </th:block>
-                <th:block th:if="${review.rating == null}">
-                    아직 평가 없음
-                </th:block>
+            <th:block th:if="${review.rating != null}">
+                <span>
+                    <span th:text="'&#9733;'"></span>
+                    <span th:text="${review.rating}"></span>
+                </span>
+            </th:block>
+            <th:block th:if="${review.rating == null}">
+                아직 평가 없음
+            </th:block>
             </span>
         </p>
     </li>
@@ -56,15 +58,15 @@
     <a th:href="@{/drama/{id}/review_list(id=${drama.id})}">더보기</a>
 </div>
 <a th:href="@{/reviews/create(dramaId=${drama.id})}">등록하기</a>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#rating').barrating({
-                theme: 'fontawesome-stars',
-                initialRating: 1,  // 초기 평점 설정 (선택한 평점이 기본으로 표시됨)
-                showSelectedRating: true,  // 선택한 평점을 텍스트로 표시
-            });
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#rating').barrating({
+            theme: 'fontawesome-stars',
+            initialRating: 1,  // 초기 평점 설정 (선택한 평점이 기본으로 표시됨)
+            showSelectedRating: true,  // 선택한 평점을 텍스트로 표시
         });
-    </script>
+    });
+</script>
 <a th:href="@{/drama/dramaList}">드라마 목록</a>
 </body>
 </html>

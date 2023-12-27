@@ -1,75 +1,33 @@
-  html,
-    body {
-      position: relative;
-      height: 100%;
-    }
+ .rank {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    text-align : center;
+    border-radius: 50%;
+    transform: translate(8%,2%);
+    z-index: 1;
+    font-size: 18px;
+    font-weight: bold;
+    background: #D1180B;
+    color: white;
+    padding: 10px;
+ }
 
-    body {
-      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-      font-size: 14px;
-      margin: 0;
-      padding: 0;
-    }
+ .swiper-slide{
+    display:flex;
+    font-size: 18px;
+    align-items: center;
+    height: 100%;
+ }
 
-    .swiper {
-      width: 100%;
-      height: 100%;
+ .img img {
+     width: 100%;         /* 이미지 너비 조절 */
+     height: 100%;        /* 이미지 높이 조절 */
+     object-fit: cover;   /* 이미지를 부모 요소에 맞게 크롭 */
+ }
 
-    }
-
-    .swiper-slide {
-      text-align: center;
-      font-size: 18px;
-      background-color:black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .swiper-slide img {
-      width: 500px;
-      height: 600px;
-      object-fit: cover;
-      margin: 0 auto;
-    }
-
-    .swiper-button-next {
-            right: 10px;
-        }
-
-ul.horizontal-list {
-    list-style-type: none;
-    padding: 0;
-    font-size: 0;
-}
-
-ul.horizontal-list li {
-   display: inline-block;
-   font-size: 16px;  /* 다시 원래의 폰트 크기로 복원 */
-   margin-right: 20px;
-}
-
-ul.horizontal-list li img {
-width: 45%;
-height: 50%;
-}
-
-ul.horizontal-list li span {
-display: block;
-}
-
-.circle {
-    width: 30px;  /* 원의 너비 */
-    height: 30px; /* 원의 높이 */
-    border-radius: 50%; /* 동그란 원 형태로 만들기 */
-    background-color: #000; /* 배경색은 검은색으로 설정, 원하는 색상으로 변경 가능 */
-    color: white; /* 텍스트 색상을 하얀색으로 설정 */
-    display: flex; /* 내부 컨텐츠 중앙 정렬을 위해 flexbox 사용 */
-    align-items: center; /* 수직 중앙 정렬 */
-    justify-content: center; /* 수평 중앙 정렬 */
-    position: absolute; /* 절대 위치 설정 */
-    top: 10px; /* 원의 상단 여백 */
-    left: 10px; /* 원의 왼쪽 여백 */
-}
-
-
+ .img img {
+      width: 100%;         /* 이미지 너비 조절 */
+      height: 100%;        /* 이미지 높이 조절 */
+      object-fit: cover;   /* 이미지를 부모 요소에 맞게 크롭 */
+  }
