@@ -13,36 +13,30 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class WebtoonService {
     private final WebtoonRepository webtoonRepository;
+    private String day;
 
-    public List<WebtoonDTO> getWebtoonList(String day) {
+    public void getWebtoonAPI(String day) {
         List<WebtoonDTO> webtoonDTOList = new ArrayList<>();
 
         try {
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders header = new HttpHeaders();
             HttpEntity<?> entity = new HttpEntity<>(header);
-            String url = "https://korea-webtoon-api.herokuapp.com";
-            String com = "naver";
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "/?" + "service=naver&updateDay=mon").build();
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl("https://korea-webtoon-api.herokuapp.com/?service=naver&updateDay=" + day).build();
 
 
             ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
 
             ArrayList<Map> webtoonsList = (ArrayList<Map>) resultMap.getBody().get("webtoons");
             for (Map<String, Object> webtoonData : webtoonsList) {
-                // BookDTO 생성 코드
                 WebtoonDTO webtoonDTO = createWebtoonDTOFromMap(webtoonData);
-                webtoonDTOList.add(webtoonDTO);
-                saveWebtoonFromDTO(webtoonDTO);
+                saveWebtoonFromDTO(webtoonDTO, day);
             }
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
@@ -52,9 +46,9 @@ public class WebtoonService {
             System.out.println(e.toString());
             // 예외 처리 로직 추가
         }
-
-        return webtoonDTOList;
     }
+
+
 
     private WebtoonDTO createWebtoonDTOFromMap(Map<String, Object> webtoonData) {
         try {
@@ -72,12 +66,11 @@ public class WebtoonService {
         } catch (Exception e) {
             // 예외 처리
             e.printStackTrace();
-            System.out.println("id================>" + (String)webtoonData.get("_id"));
             return null;
         }
     }
 
-    public void saveWebtoonFromDTO(WebtoonDTO webtoonDTO) {
+    public void saveWebtoonFromDTO(WebtoonDTO webtoonDTO,String updateDays) {
         Webtoon webtoon = new Webtoon();
         webtoon.set_id(webtoonDTO.get_id());
         webtoon.setFanCount(webtoonDTO.getFanCount());
@@ -85,15 +78,22 @@ public class WebtoonService {
         webtoon.setTitle(webtoonDTO.getTitle());
         webtoon.setAuthor(webtoonDTO.getAuthor());
         webtoon.setImg(webtoonDTO.getImg());
-        webtoon.setUpdateDays(webtoonDTO.getUpdateDays());
+        webtoon.setUpdateDays(updateDays);
+        System.out.println("UpdateDays: " + webtoon.getUpdateDays()); // 디버깅용 로그
         webtoon.setDetailUrl(webtoonDTO.getDetailUrl());
         webtoonRepository.save(webtoon);
     }
 
 
-//    public Optional<Object> getWebtoonDetailById(Long webtoonId) {
-//        return Optional.of(webtoonRepository.findById(webtoonId));
-//    }
+    public List<Webtoon> getWebtoonList(String day) {
+
+        List<Webtoon> newWebtoonList = webtoonRepository.findByUpdateDays(day);
+        if(newWebtoonList.isEmpty()){
+            getWebtoonAPI(day);
+        }
+        newWebtoonList = webtoonRepository.findByUpdateDays(day);
+        return newWebtoonList;
+    }
 
     public Optional<Webtoon> createSampleWebtoonDetail(Long webtoonId) {
         return webtoonRepository.findById(webtoonId);

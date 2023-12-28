@@ -26,8 +26,8 @@ public class Webtoon {
 
     private String img;
 
-    @ElementCollection
-    private List<String> updateDays;
+    @Column(name = "update_days")
+    private String updateDays;
 
     private String searchKeyword;
 

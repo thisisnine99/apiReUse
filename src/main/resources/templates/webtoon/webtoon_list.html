@@ -23,9 +23,7 @@
                 <div class="swiper-wrapper">
                     <div class="swiper-slide"
                          style="display:flex; font-size: 18px; align-items: center; height : 100%;">
-                        <!--                        <div th:each="webtoonDTO : ${webtoonDTOList}" th:if="${movieDaily.rank <= 5}">-->
-                        <!--                            <a th:href="@{'/webtoon/detail/' + ${webtoonDTO.getWebtoonId()}}">-->
-                        <div class="dailyMovie" style="display : grid;" th:each="webtoonDTO : ${webtoonDTOList.subList(0, 5)}">
+                        <div class="dailyMovie" style="display : grid;" th:each="webtoonDTO : ${mondayList.subList(0, 5)}">
                             <div class="img" style="padding : 6px;">
                                 <span class="fanCount" th:text="${webtoonDTO['fanCount']}"></span>
                                 <img th:src="${webtoonDTO.img}"
@@ -51,7 +49,8 @@
                     </div>
                     <div class="swiper-slide"
                          style="display:flex; font-size: 18px; align-items: center; height : 100%;">
-                        <div class="dailyMovie" style="display : grid;" th:each="webtoonDTO : ${webtoonDTOList.subList(webtoonDTOList.size() - 5, webtoonDTOList.size())}">
+                        <div class="dailyMovie" style="display : grid;" th:each="webtoonDTO : ${mondayList.subList(mondayList.size() - 5, mondayList.size())}">
+<!--                            <div th:if="${webtoonDTO.updateDays.contains('tue')}">-->
                             <div class="img" style="padding : 6px;">
                                 <span class="fanCount" th:text="${webtoonDTO['fanCount']}"></span>
                                 <img th:src="${webtoonDTO.img}"
