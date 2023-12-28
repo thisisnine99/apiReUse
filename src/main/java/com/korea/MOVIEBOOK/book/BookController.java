@@ -3,9 +3,7 @@ package com.korea.MOVIEBOOK.book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -66,16 +64,19 @@ public class BookController {
             endIndex+=5;
         }
         System.out.println("=================================== 새로고침 ===================================");
-        model.addAttribute("bestSellerListList", bestSellerListList);
-        model.addAttribute("newSpecialBookListList", newSpecialBookListList);
+        List<List<List<Book>>> allList = new ArrayList<>();
+        allList.add(bestSellerListList);
+        allList.add(newSpecialBookListList);
+//        model.addAttribute("bestSellerListList", bestSellerListList);
+//        model.addAttribute("newSpecialBookListList", newSpecialBookListList);
+        model.addAttribute("allList", allList);
         return "book/bookTest";
     }
 
-    @GetMapping("/detail")
-    @ResponseBody
-    public String detailPage() {
-
-        return "안녕하세요";
+    @PostMapping("/detail")
+    public String detailPage(String title, Model model) {
+        model.addAttribute("title", title);
+        return "book/testtest";
     }
 
 }
