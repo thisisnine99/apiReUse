@@ -14,6 +14,8 @@ public class WebtoonDTO {
 
     private String _id;
 
+    private Integer fanCount;
+
     private Long webtoonId;
 
     private String title;
