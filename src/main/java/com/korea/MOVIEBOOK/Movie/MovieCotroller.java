@@ -14,14 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 @RequiredArgsConstructor
 @Controller
@@ -54,19 +51,50 @@ public class MovieCotroller {
         Date weekdate = Date.from(localDateTime.atZone(java.time.ZoneId.systemDefault()).toInstant());
         String week = getCurrentWeekOfMonth(weekdate);
 
+        List<List<MovieDaily>> movieDailyListList = new ArrayList<>();
+
+        Integer startIndex = 0;
+        Integer endIndex = 5;
+
+        for(int i = 0 ; i < movieDailyList.size()/5; i ++){
+            movieDailyListList.add(movieDailyList.subList(startIndex, Math.min(endIndex, movieDailyList.size())));
+            startIndex+=5;
+            endIndex+=5;
+        }
+
+        List<List<MovieWeekly>> movieWeekListList = new ArrayList<>();
+
+        Integer startIndex2 = 0;
+        Integer endIndex2 = 5;
+
+        for(int i = 0 ; i < movieWeekList.size()/5; i ++){
+            movieWeekListList.add(movieWeekList.subList(startIndex2, Math.min(endIndex2, movieWeekList.size())));
+            startIndex2+=5;
+            endIndex2+=5;
+        }
+
         model.addAttribute("movieDailyDate",date);
-        model.addAttribute("movieDailyList",movieDailyList);
+        model.addAttribute("movieDailyListList",movieDailyListList);
         model.addAttribute("movieWeeklyDate",week);
-        model.addAttribute("movieWeekList",movieWeekList);
+        model.addAttribute("movieWeekListList",movieWeekListList);
 
 
         return "Movie/movie";
     }
 
     @PostMapping("movie/detail")
-    public String movieDetail(Model model, @RequestParam String date, @RequestParam String title){
+    public String movieDetail(Model model, String date, String title){
         MovieDaily movieDaily = this.movieDailyService.findmovie(date,title);
+
+        Integer runtime = Integer.valueOf(movieDaily.getRuntime());
+        Integer hour = (int) Math.floor((double) runtime / 60);
+        Integer minutes = runtime % 60;
+        String movieruntime = String.valueOf(hour) + "시간" + String.valueOf(minutes) + "분";
+
         model.addAttribute("movieDailyDetail",movieDaily);
+        model.addAttribute("movieruntime",movieruntime);
+
+
 
         return "Movie/movie_detail";
     }
