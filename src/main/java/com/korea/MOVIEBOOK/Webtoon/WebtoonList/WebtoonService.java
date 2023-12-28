@@ -60,6 +60,7 @@ public class WebtoonService {
         try {
             return WebtoonDTO.builder()
                     ._id((String) webtoonData.get("_id"))
+                    .fanCount((Integer) webtoonData.get("fanCount"))
                     .webtoonId((Long) webtoonData.get("webtoonId"))
                     .title((String) webtoonData.get("title"))
                     .author((String) webtoonData.get("author"))
@@ -79,6 +80,7 @@ public class WebtoonService {
     public void saveWebtoonFromDTO(WebtoonDTO webtoonDTO) {
         Webtoon webtoon = new Webtoon();
         webtoon.set_id(webtoonDTO.get_id());
+        webtoon.setFanCount(webtoonDTO.getFanCount());
         webtoon.setWebtoonId(webtoonDTO.getWebtoonId());
         webtoon.setTitle(webtoonDTO.getTitle());
         webtoon.setAuthor(webtoonDTO.getAuthor());
