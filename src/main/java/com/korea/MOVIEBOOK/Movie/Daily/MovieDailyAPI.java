@@ -41,7 +41,7 @@ public class MovieDailyAPI {
 
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "?" + "key=" + key + "&targetDt=" + date).build();
 
-            ResponseEntity<String> df = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, String.class);
+//            ResponseEntity<String> df = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, String.class);
 
             //이 한줄의 코드로 API를 호출해 MAP타입으로 전달 받는다.
             ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
@@ -53,11 +53,12 @@ public class MovieDailyAPI {
             ArrayList<Map> dboxoffList = (ArrayList<Map>) lm.get("dailyBoxOfficeList");
 
             if (dboxoffList.size() < 10) {
-                movieDaily(date);
+                movieDaily(date); // api1 호출
             }
+
             int i = 0;
             for (Map map : dboxoffList) {
-                String releaseDts = this.movieAPI.movieDetail((String) map.get("movieCd"), date, gubun);
+                String releaseDts = this.movieAPI.movieDetail((String) map.get("movieCd"), date, gubun);  // api2 호출
                 this.movieAPI.kmdb((String) map.get("movieNm"), releaseDts, gubun);
                 this.movieDailyService.add(gubun, Long.parseLong((String) map.get("rank")), (String) map.get("movieNm"), Long.parseLong((String) map.get("audiAcc")), date);
                 i++;

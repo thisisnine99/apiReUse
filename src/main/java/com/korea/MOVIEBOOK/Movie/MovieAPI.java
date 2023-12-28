@@ -17,10 +17,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+
 @Component
 @RequiredArgsConstructor
 public class MovieAPI {
@@ -55,10 +53,8 @@ public class MovieAPI {
 
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + key + "&detail=Y&title=" + movieNm + "&releaseDts=" + releaseDt + "&nation=" + nation).build();
 
-
             //이 한줄의 코드로 API를 호출해 MAP타입으로 전달 받는다.
             ResponseEntity<String> resultString = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, String.class);
-
 
             String[] responseBits = resultString.toString().split("\r\n");
             String jsonStr = responseBits[1];
@@ -74,7 +70,6 @@ public class MovieAPI {
             Map<String, Object> plotsList = (Map<String, Object>) ResultList.get(0).get("plots");
             ArrayList<Map> plotList = (ArrayList<Map>) plotsList.get("plot");
             String plotText = (String) plotList.get(0).get("plotText");
-
 
             String post = (String) ResultList.get(0).get("posters");
             String[] dataArray = post.split("\\|");
@@ -123,19 +118,24 @@ public class MovieAPI {
             result.put("body", resultMap.getBody()); //실제 데이터 정보 확인
 
             LinkedHashMap movieDetail = (LinkedHashMap) resultMap.getBody().get("movieInfoResult");
-            if((LinkedHashMap) resultMap.getBody().get("movieInfoResult") == null){
-                System.out.println("===  movieInfoResult 문제발생 ===" );
-                if(gubun == 0 ){
-                    this.movieDailyService.deleteDailyMovie(date);
-                } else {
-                    this.movieWeeklyService.deleteWeeklyMovie(today2);
-                }
-                System.out.println("재 시작중");
+
+            List<String> failedMovieList = new ArrayList<>();
+
+            if((LinkedHashMap) resultMap.getBody().get("movieInfoResult") == null || (Map<String, Object>) movieDetail.get("movieInfo") == null){
+                failedMovieList.add(code);
+//                System.out.println("===  movieInfoResult 문제발생 ===" );
+//                if(gubun == 0 ){
+//                    this.movieDailyService.deleteDailyMovie(date);
+//                } else {
+//                    this.movieWeeklyService.deleteWeeklyMovie(today2);
+//                }
+//                System.out.println("재 시작중");
             }
 
-            if((Map<String, Object>) movieDetail.get("movieInfo") == null){
-                System.out.println("=== movieInfo 문제발생 ===" );
-            }
+//            if((Map<String, Object>) movieDetail.get("movieInfo") == null){
+//                System.out.println("=== movieInfo 문제발생 ===" );
+//            }
+
             Map<String, Object> detailList = (Map<String, Object>) movieDetail.get("movieInfo");
 
             ArrayList<Map> actorsList = (ArrayList<Map>) detailList.get("actors");
@@ -173,10 +173,16 @@ public class MovieAPI {
 
 
             if(gubun == 0){
+                long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
                 this.movieDailyService.addDeail(movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm, date);
+                long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+                long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
+                System.out.println("시간차이(m) : "+ (afterTime - beforeTime));
+                System.out.println("시간차이(m) : "+secDiffTime);
             } else if(gubun == 1){
                 this.movieWeeklyService.addDeail(date, movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm);
             }
+            System.out.println("sssss");
 
             return releaseDate+nationNm;
 
