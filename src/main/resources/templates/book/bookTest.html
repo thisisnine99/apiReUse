@@ -14,55 +14,24 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          margin: 0;
         }
 
         a {
             color:inherit;
 	        text-decoration:none;
         }
-
-        .rank {
-        margin-bottom: 244px;
-        position: absolute;
-        width: 43px;
-        height: 46px;
-        text-align : center;
-        border-radius: 50%;
-        transform: translate(8%,2%);
-        z-index: 1;
-        font-size: 18px;
-        font-weight: bold;
-        background: #258f44;
-        color: white;
-        padding: 10px;
-    }
     </style>
 </head>
 <body layout:fragment="content">
-<!--베스트셀러-->
-<div class="swiper mySwiper">
-    <div style="margin-left : 85%; margin-top : -3px; display : flex;">
-        <div class="swiper-pagination swiper-pagination"
-             style="position : relative; width : 55%; margin-top : 5px;"></div>
-    </div>
-    <div class="swiper-wrapper">
-        <div class="swiper-slide" th:each="bestSellerList : ${bestSellerListList}">
-            <a th:each="bestSeller : ${bestSellerList}" th:href="@{/book/detail}">
-                <div>
-                    <img th:src="${bestSeller.getCover()}">
-                    <p th:text="${bestSeller.getTitle()}" class="bookTitle"></p>
-                </div>
-            </a>
-        </div>
-    </div>
-    <div class="swiper-button-next" style="color : #258f44;"></div>
-    <div class="swiper-button-prev" style="color : #258f44;"></div>
-</div>
-<!-- 새로운 스와이퍼 -->
+<!-- 베스트셀러 -->
 <div class="swiper-1">
     <div style="width : 1340px; margin : auto;">
-        <div class="swiper mySwiper" style="width : 85%; margin-top : 10px;">
-            <div style="margin-left : 85%; margin-top : -3px; display : flex;">
+        <div style="text-align : left; margin-left : 8%;">
+            <span style="color : #000000; font-size : 20px; font-weight : bold;">베스트 셀러</span>
+        </div>
+        <div class="swiper mySwiper" style="margin-top : 10px; width:95%;">
+            <div style="display : flex;">
                 <div class="swiper-pagination swiper-pagination"
                      style="position : relative; width : 55%; margin-top : 5px;"></div>
             </div>
@@ -70,16 +39,20 @@
                 <div class="swiper-slide"
                      style="display:flex; font-size: 18px; align-items: center; height : 100%;"
                      th:each="bestSellerList : ${bestSellerListList}">
-                    <a class="dailyMovie" style="display : grid;" th:each="bestSeller : ${bestSellerList}"
+                    <a class="dailyMovie" style="display : grid; margin-left:15px;" th:each="bestSeller : ${bestSellerList}"
                        th:href="@{/book/detail}">
-                        <div class="img" style="padding : 6px; width: 213px; height: 305px; display: flex; align-items: center;">
-                            <span class="rank" th:text="${bestSeller.getBestRank()}"></span>
+                        <div class="img" style="padding : 5px; width: 213px; height: 305px; display: flex;
+                        justify-content: center; align-items: center; border: solid 2px;">
+                            <div class="rank" th:text="${bestSeller.getBestRank()}"
+                                  style="position: absolute; width: 43px; height: 46px; text-align:
+                                  center; border-radius: 50%; font-size: 18px; font-weight: bold;
+                                  background: #3b3ff6; color: white; padding: 10px; margin-left: -12.5%; margin-top: -19%;"></div>
                             <img th:src="${bestSeller.getCover()}" style="max-height: 100%;">
                         </div>
                         <div class="short-info" style="display : flex; flex-direction: column; align-items: flex-start;
                         margin-left : 5px; padding-top: 16px;">
                                 <span class="mv-title"
-                                      th:text="${#strings.length(bestSeller.getTitle()) > 17 ? #strings.substring(bestSeller.getTitle(), 0, 17) + '..' : bestSeller.getTitle()}"
+                                      th:text="${#strings.length(bestSeller.getTitle()) > 13 ? #strings.substring(bestSeller.getTitle(), 0, 13) + '..' : bestSeller.getTitle()}"
                                       style="font-size : 17px;"></span>
                             <div class="short-kind">
                                 <span style="color : #868e96; font-size : 15px;">출판일</span>
@@ -90,8 +63,8 @@
                     </a>
                 </div>
             </div>
-            <div class="swiper-button-next" style="color : #258f44;"></div>
-            <div class="swiper-button-prev" style="color : #258f44;"></div>
+            <div class="swiper-button-next" style="color : #3b3ff6;"></div>
+            <div class="swiper-button-prev" style="color : #3b3ff6;"></div>
         </div>
     </div>
 </div>
