@@ -1,5 +1,6 @@
 package com.korea.MOVIEBOOK.Webtoon.WebtoonList;
 
+import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class WebtoonDTO {
 
     private String img;
 
+    @Column(name = "update_days")
     private List<String> updateDays;
 
     private String searchKeyword;
