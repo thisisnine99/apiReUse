@@ -38,14 +38,16 @@ public class MovieCotroller {
     public String movie(Model model) throws ParseException {
         List<MovieDaily> movieDailyList = this.movieDailyService.findDailyMovie(date);  // movieDaily data 확인
         List<MovieWeekly> movieWeekList = this.movieWeeklyService.findWeeklyMovie(weeks);
+        Collections.sort(movieDailyList, new movieRankComparator());
+        Collections.sort(movieWeekList, new movieWeeklyRankComparator());
 
         if (movieDailyList.isEmpty()) {
             List<Map> failedMovieList = this.movieDailyAPI.movieDaily(date);
             movieDailySize(failedMovieList);
         }
         if (movieWeekList.isEmpty()) {
-            this.movieWeeklyAPI.movieWeekly(weeks);
-            movieWeeklySize();
+            List<Map> failedWeeklyMovieList = this.movieWeeklyAPI.movieWeekly(weeks);
+            movieWeeklySize(failedWeeklyMovieList);
         }
 
         LocalDateTime localDateTime = weeksago;
@@ -99,37 +101,17 @@ public class MovieCotroller {
     }
 
     public void movieDailySize(List<Map> failedMovieList) {
-//        public List<MovieDaily> movieDailySize(List<Map> failedMovieList) {
-//        List<MovieDaily> movieDailyList = this.movieDailyService.findDailyMovie(date);
-//        if (movieDailyList.size() < 10 && failedMovieList != null) {
         if (failedMovieList != null && !failedMovieList.isEmpty()) {
             List<Map> failedMoiveList = movieDailyAPI.saveDailyMovieDataByAPI(failedMovieList);
             movieDailySize(failedMoiveList);
         }
-
-//        return movieDailyList;
     }
 
-//    public List<MovieDaily> movieDailyDelete() {
-//        System.out.println("======재시작=====");
-//        this.movieDailyService.deleteDailyMovie(date);
-//        movieDailyAPI.movieDaily(date);
-//        return movieDailySize();
-//    }
-
-    public List<MovieWeekly> movieWeeklySize() throws ParseException {
-        List<MovieWeekly> movieWeeklyList = this.movieWeeklyService.findWeeklyMovie(weeks);
-//        if (movieWeeklyList.size() < 10) {
-//            movieWeeklyDelete();
-//        }
-        return movieWeeklyList;
-    }
-
-    public List<MovieWeekly> movieWeeklyDelete() throws ParseException {
-        System.out.println("======재시작=====");
-        this.movieWeeklyService.deleteWeeklyMovie(weeks);
-        this.movieWeeklyAPI.movieWeekly(weeks);
-        return movieWeeklySize();
+    public void movieWeeklySize(List<Map> failedMovieList) throws ParseException {
+        if (failedMovieList != null && !failedMovieList.isEmpty()) {
+            List<Map> failedMoiveList = movieWeeklyAPI.saveWeeklyMovieDataByAPI(failedMovieList,weeks);
+            movieDailySize(failedMoiveList);
+        }
     }
 
     public static String getCurrentWeekOfMonth(Date date) {
@@ -164,6 +146,21 @@ public class MovieCotroller {
 
         return month + "월 " + weekOfMonth + "주차";
     }
+
+    class movieRankComparator implements  Comparator<MovieDaily>{
+        @Override
+        public int compare(MovieDaily f1, MovieDaily f2){
+            return f1.getRank().compareTo(f2.getRank());
+        }
+    }
+
+    class movieWeeklyRankComparator implements  Comparator<MovieWeekly>{
+        @Override
+        public int compare(MovieWeekly f1, MovieWeekly f2){
+            return f1.getRank().compareTo(f2.getRank());
+        }
+    }
+
 
 }
 

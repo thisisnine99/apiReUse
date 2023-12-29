@@ -124,18 +124,7 @@ public class MovieAPI {
             if ((LinkedHashMap) resultMap.getBody().get("movieInfoResult") == null || (Map<String, Object>) movieDetail.get("movieInfo") == null) {
                 failedMovieList.add(movie);
                 rData.put("failedMovieList", failedMovieList);
-                //                System.out.println("===  movieInfoResult 문제발생 ===" );
-//                if(gubun == 0 ){
-//                    this.movieDailyService.deleteDailyMovie(date);
-//                } else {
-//                    this.movieWeeklyService.deleteWeeklyMovie(today2);
-//                }
-//                System.out.println("재 시작중");
             }
-
-//            if((Map<String, Object>) movieDetail.get("movieInfo") == null){
-//                System.out.println("=== movieInfo 문제발생 ===" );
-//            }
 
             Map<String, Object> detailList = (Map<String, Object>) movieDetail.get("movieInfo");
 
@@ -178,7 +167,6 @@ public class MovieAPI {
             } else if (gubun == 1) {
                 this.movieWeeklyService.addDeail(date, movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm);
             }
-//            rData.put("failedMovieList", failedMovieList);
             rData.put("releaseDateAndNationNm", releaseDate + nationNm);
 
 
@@ -192,9 +180,6 @@ public class MovieAPI {
             result.put("statusCode", "999");
             result.put("body", "excpetion오류");
             System.out.println(e.toString());
-
-//            List<String> failedMovieList = (List<String>)rData.get("failedMovieList");
-//            System.out.println(failedMovieList);
         }
         return rData;
     }

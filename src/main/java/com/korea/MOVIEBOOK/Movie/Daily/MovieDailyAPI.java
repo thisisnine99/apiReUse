@@ -27,8 +27,6 @@ public class MovieDailyAPI {
     String date = yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     Integer gubun = 0;  // MovieDaily, MovieWeekly 구분 변수
 
-
-
     // api n개 처리해주는 놈
     public List<Map> saveDailyMovieDataByAPI(List<Map> movieList) {
         List<Map> finalFailedMovieList = new ArrayList<>();
@@ -85,22 +83,6 @@ public class MovieDailyAPI {
             }
 
             finalFailedMovieList = saveDailyMovieDataByAPI(dboxoffList);
-//            int i = 0;
-//
-//            for (Map map : dboxoffList) {
-//                rData = this.movieAPI.movieDetail((String) map.get("movieCd"), date, gubun);  // api2 호출
-//                if(rData.get("failedMovieList") != null) {
-//                    finalFailedMovieList.addAll((List<String>) rData.get("failedMovieList"));
-//                }
-//                else {
-//                    this.movieAPI.kmdb((String) map.get("movieNm"), (String)rData.get("releaseDateAndNationNm"), gubun);
-//                    this.movieDailyService.add(gubun, Long.parseLong((String) map.get("rank")), (String) map.get("movieNm"), Long.parseLong((String) map.get("audiAcc")), date);
-//                }
-//                i++;
-//               System.out.println("=======i의값====" + i);
-//            }
-//
-//            System.out.println("121212" + finalFailedMovieList.size());
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             result.put("statusCode", e.getRawStatusCode());
@@ -111,7 +93,6 @@ public class MovieDailyAPI {
             result.put("statusCode", "999");
             result.put("body", "excpetion오류");
             System.out.println(e.toString());
-            System.out.println(finalFailedMovieList.size());
         }
         return finalFailedMovieList;
     }

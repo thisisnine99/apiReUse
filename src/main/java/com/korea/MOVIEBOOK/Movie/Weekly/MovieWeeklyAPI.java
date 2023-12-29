@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -22,11 +23,35 @@ import java.util.*;
 public class MovieWeeklyAPI {
     private final MovieAPI movieAPI;
     private final MovieWeeklyService movieWeeklyService;
-    public void movieWeekly(String date) {
+
+    public List<Map> saveWeeklyMovieDataByAPI(List<Map> movieList, String date) throws ParseException {
+        List<Map> finalFailedMovieList = new ArrayList<>();
+        Map rData = null;
+        int j = 0;
+        for (Map movie : movieList) {
+            rData = this.movieAPI.movieDetail(movie, date, 1);  // api2 호출
+            if(rData.get("failedMovieList") != null) {
+                finalFailedMovieList.addAll((List<Map>) rData.get("failedMovieList"));
+            } else {
+                this.movieAPI.kmdb((String) movie.get("movieNm"), (String)rData.get("releaseDateAndNationNm"), 1);
+                this.movieWeeklyService.add(date, Long.parseLong((String) movie.get("rank")), (String) movie.get("movieNm"), Long.parseLong((String) movie.get("audiAcc")));
+            }
+            j++;
+            System.out.println("=======j의값====" + j);
+            System.out.println("=======movie Code 의값 : " + movie.get("movieCd"));
+            System.out.println("=======movie Name 의값 : " + movie.get("movieNm"));
+            System.out.println("=======movie Rank 의값 : " + movie.get("rank"));
+            System.out.println("=======movie Acc 의값 : " + movie.get("audiAcc"));
+        }
+        System.out.println("failedSize : " + finalFailedMovieList.size());
+        return finalFailedMovieList;
+    }
+    public List<Map> movieWeekly(String date) {
 
         HashMap<String, Object> result = new HashMap<String, Object>();
         String key = "f53a4247c0c7eda74780f0c0b855d761";
         Map rData = null;
+        List<Map> finalFailedMovieList = new ArrayList<>();
 
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -51,16 +76,7 @@ public class MovieWeeklyAPI {
             if (dboxoffList.size() < 10) {
                 movieWeekly(date);
             }
-            int j = 0;
-            for (Map map : dboxoffList) {
-//                String releaseDts = this.movieAPI.movieDetail((String) map.get("movieCd"), date, 1);
-//                this.movieAPI.kmdb((String) map.get("movieNm"), releaseDts, 1);
-//                rData = this.movieAPI.movieDetail((String) map.get("movieCd"), date, 1);  // api2 호출
-                this.movieAPI.kmdb((String) map.get("movieNm"), (String)rData.get("releaseDateAndNationNm"), 1);
-                this.movieWeeklyService.add(date, Long.parseLong((String) map.get("rank")), (String) map.get("movieNm"), Long.parseLong((String) map.get("audiAcc")));
-                j++;
-                System.out.println("=======j의값====" + j);
-            }
+            finalFailedMovieList = saveWeeklyMovieDataByAPI(dboxoffList, date);
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             result.put("statusCode", e.getRawStatusCode());
@@ -71,8 +87,7 @@ public class MovieWeeklyAPI {
             result.put("statusCode", "999");
             result.put("body", "excpetion오류");
             System.out.println(e.toString());
-//            List<String> failedMovieList = (List<String>)rData.get("failedMovieList");
-//            System.out.println(failedMovieList);
         }
+        return finalFailedMovieList;
     }
 }
