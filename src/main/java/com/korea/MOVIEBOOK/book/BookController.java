@@ -67,8 +67,6 @@ public class BookController {
         List<List<List<Book>>> allList = new ArrayList<>();
         allList.add(bestSellerListList);
         allList.add(newSpecialBookListList);
-//        model.addAttribute("bestSellerListList", bestSellerListList);
-//        model.addAttribute("newSpecialBookListList", newSpecialBookListList);
         model.addAttribute("allList", allList);
         return "book/bookTest";
     }
