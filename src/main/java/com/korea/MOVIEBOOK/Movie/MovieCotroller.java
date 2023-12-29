@@ -10,14 +10,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.*;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 @RequiredArgsConstructor
 @Controller
@@ -32,68 +33,85 @@ public class MovieCotroller {
 
     LocalDateTime weeksago = LocalDateTime.now().minusDays(7);
     String weeks = weeksago.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
     @GetMapping("movie")
     public String movie(Model model) throws ParseException {
         List<MovieDaily> movieDailyList = this.movieDailyService.findDailyMovie(date);  // movieDaily data 확인
         List<MovieWeekly> movieWeekList = this.movieWeeklyService.findWeeklyMovie(weeks);
+        Collections.sort(movieDailyList, new movieRankComparator());
+        Collections.sort(movieWeekList, new movieWeeklyRankComparator());
 
         if (movieDailyList.isEmpty()) {
-            this.movieDailyAPI.movieDaily(date);
-            movieDailySize();
+            List<Map> failedMovieList = this.movieDailyAPI.movieDaily(date);
+            movieDailySize(failedMovieList);
         }
         if (movieWeekList.isEmpty()) {
-            this.movieWeeklyAPI.movieWeekly(weeks);
-            movieWeeklySize();
+            List<Map> failedWeeklyMovieList = this.movieWeeklyAPI.movieWeekly(weeks);
+            movieWeeklySize(failedWeeklyMovieList);
         }
 
         LocalDateTime localDateTime = weeksago;
         Date weekdate = Date.from(localDateTime.atZone(java.time.ZoneId.systemDefault()).toInstant());
         String week = getCurrentWeekOfMonth(weekdate);
 
-        model.addAttribute("movieDailyDate",date);
-        model.addAttribute("movieDailyList",movieDailyList);
-        model.addAttribute("movieWeeklyDate",week);
-        model.addAttribute("movieWeekList",movieWeekList);
+        List<List<MovieDaily>> movieDailyListList = new ArrayList<>();
+
+        Integer startIndex = 0;
+        Integer endIndex = 5;
+
+        for (int i = 0; i < movieDailyList.size() / 5; i++) {
+            movieDailyListList.add(movieDailyList.subList(startIndex, Math.min(endIndex, movieDailyList.size())));
+            startIndex += 5;
+            endIndex += 5;
+        }
+
+        List<List<MovieWeekly>> movieWeekListList = new ArrayList<>();
+
+        Integer startIndex2 = 0;
+        Integer endIndex2 = 5;
+
+        for (int i = 0; i < movieWeekList.size() / 5; i++) {
+            movieWeekListList.add(movieWeekList.subList(startIndex2, Math.min(endIndex2, movieWeekList.size())));
+            startIndex2 += 5;
+            endIndex2 += 5;
+        }
+
+        model.addAttribute("movieDailyDate", date);
+        model.addAttribute("movieDailyListList", movieDailyListList);
+        model.addAttribute("movieWeeklyDate", week);
+        model.addAttribute("movieWeekListList", movieWeekListList);
 
 
         return "Movie/movie";
     }
-    public List<MovieDaily> movieDailySize(){
-        List<MovieDaily> movieDailyList = this.movieDailyService.findDailyMovie(date);
-        if(movieDailyList.isEmpty()) {
-            movieDailyAPI.movieDaily(date);
-            movieDailyList = this.movieDailyService.findDailyMovie(date);
-            if(movieDailyList.size()<10){
-                movieDailyDelete();
-            }
+
+    @PostMapping("movie/detail")
+    public String movieDetail(Model model, String date, String title) {
+        MovieDaily movieDaily = this.movieDailyService.findmovie(date, title);
+
+        Integer runtime = Integer.valueOf(movieDaily.getRuntime());
+        Integer hour = (int) Math.floor((double) runtime / 60);
+        Integer minutes = runtime % 60;
+        String movieruntime = String.valueOf(hour) + "시간" + String.valueOf(minutes) + "분";
+
+        model.addAttribute("movieDailyDetail", movieDaily);
+        model.addAttribute("movieruntime", movieruntime);
+
+        return "Movie/movie_detail";
+    }
+
+    public void movieDailySize(List<Map> failedMovieList) {
+        if (failedMovieList != null && !failedMovieList.isEmpty()) {
+            List<Map> failedMoiveList = movieDailyAPI.saveDailyMovieDataByAPI(failedMovieList);
+            movieDailySize(failedMoiveList);
         }
-        return movieDailyList;
     }
 
-    public List<MovieDaily> movieDailyDelete(){
-        System.out.println("======재시작=====");
-        this.movieDailyService.deleteDailyMovie(date);
-        movieDailyAPI.movieDaily(date);
-        return movieDailySize();
-    }
-
-    public List<MovieWeekly> movieWeeklySize() throws ParseException {
-        List<MovieWeekly> movieWeeklyList = this.movieWeeklyService.findWeeklyMovie(weeks);
-        if(movieWeeklyList.isEmpty()) {
-            this.movieWeeklyAPI.movieWeekly(weeks);
-            movieWeeklyList = this.movieWeeklyService.findWeeklyMovie(weeks);
-            if(movieWeeklyList.size()<10){
-                movieDailyDelete();
-            }
+    public void movieWeeklySize(List<Map> failedMovieList) throws ParseException {
+        if (failedMovieList != null && !failedMovieList.isEmpty()) {
+            List<Map> failedMoiveList = movieWeeklyAPI.saveWeeklyMovieDataByAPI(failedMovieList,weeks);
+            movieDailySize(failedMoiveList);
         }
-        return movieWeeklyList;
-    }
-
-    public List<MovieWeekly> movieWeeklyDelete() throws ParseException {
-        System.out.println("======재시작=====");
-        this.movieWeeklyService.deleteWeeklyMovie(weeks);
-        this.movieWeeklyAPI.movieWeekly(weeks);
-        return movieWeeklySize();
     }
 
     public static String getCurrentWeekOfMonth(Date date) {
@@ -128,6 +146,21 @@ public class MovieCotroller {
 
         return month + "월 " + weekOfMonth + "주차";
     }
+
+    class movieRankComparator implements  Comparator<MovieDaily>{
+        @Override
+        public int compare(MovieDaily f1, MovieDaily f2){
+            return f1.getRank().compareTo(f2.getRank());
+        }
+    }
+
+    class movieWeeklyRankComparator implements  Comparator<MovieWeekly>{
+        @Override
+        public int compare(MovieWeekly f1, MovieWeekly f2){
+            return f1.getRank().compareTo(f2.getRank());
+        }
+    }
+
 
 }
 

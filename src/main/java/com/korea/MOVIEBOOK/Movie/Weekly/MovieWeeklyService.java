@@ -70,8 +70,9 @@ public class MovieWeeklyService {
     }
 
     public void deleteWeeklyMovie(String weeks) throws ParseException {
-        String week = weeklydate(weeks);
-        String year = week.substring(0,4);
+        String date = String.valueOf(Integer.parseInt(weeks) -7);
+        String week = weeklydate(date);
+        String year = date.substring(0,4);
         List<MovieWeekly> movieWeeklyList = this.movieWeeklyRepository.findByYearAndWeek(year,week);
         int i = 0;
         while (i < movieWeeklyList.size()) {
