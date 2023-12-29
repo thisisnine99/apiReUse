@@ -22,5 +22,4 @@ public class MovieDaily {
 
     @OneToOne
     private Movie movie;
-
 }

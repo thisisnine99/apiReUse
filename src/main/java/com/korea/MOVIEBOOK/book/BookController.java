@@ -1,5 +1,6 @@
 package com.korea.MOVIEBOOK.book;
 
+import com.korea.MOVIEBOOK.Movie.Daily.MovieDailyAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import java.util.*;
 public class BookController {
 
     private final BookService bookService;
+    private final MovieDailyAPI movieDailyAPI;
 
     @GetMapping("/mainPage")
     public String mainPage(Model model) {
@@ -46,6 +48,7 @@ public class BookController {
     @PostMapping("/detail")
     public String detailPage(String title, Model model) {
         model.addAttribute("title", title);
+        movieDailyAPI.movieDaily();
         return "book/testtest";
     }
 }

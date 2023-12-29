@@ -61,7 +61,7 @@ public class MovieWeeklyAPI {
             String url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.json";
 
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "?" + "key=" + key + "&targetDt=" + date + "&weekGb=0").build();
-
+            //  기본url에 weelky가 붙어있으므로 넣은 date를 기준으로 들어가있는 해당 주의 탑 10영화.
 //            ResponseEntity<String> df = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, String.class);
 
             //이 한줄의 코드로 API를 호출해 MAP타입으로 전달 받는다.
