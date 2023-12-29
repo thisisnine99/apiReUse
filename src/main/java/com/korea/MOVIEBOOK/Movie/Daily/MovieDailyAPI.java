@@ -1,5 +1,7 @@
 package com.korea.MOVIEBOOK.Movie.Daily;
 
+import com.korea.MOVIEBOOK.Movie.Movie.Movie;
+import com.korea.MOVIEBOOK.Movie.Movie.MovieService;
 import com.korea.MOVIEBOOK.Movie.MovieAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -23,6 +25,7 @@ public class MovieDailyAPI {
 
     private final MovieDailyService movieDailyService;
     private final MovieAPI movieAPI;
+    private final MovieService movieService;
     LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
     String date = yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     Integer gubun = 0;  // MovieDaily, MovieWeekly 구분 변수
@@ -34,13 +37,15 @@ public class MovieDailyAPI {
         int i = 0;
 
         for (Map movie : movieList) {
-            rData = this.movieAPI.movieDetail(movie, date, gubun);  // api2 호출
+
+            rData = this.movieAPI.movieDetail(movie);  // api2 호출
             if(rData.get("failedMovieList") != null) {
                 finalFailedMovieList.addAll((List<Map>) rData.get("failedMovieList"));
             }
             else {
-                this.movieAPI.kmdb((String) movie.get("movieNm"), (String)rData.get("releaseDateAndNationNm"), gubun);
-                this.movieDailyService.add(gubun, Long.parseLong((String) movie.get("rank")), (String) movie.get("movieNm"), Long.parseLong((String) movie.get("audiAcc")), date);
+                this.movieAPI.kmdb((String) movie.get("movieNm"), (String)rData.get("releaseDateAndNationNm"));
+                this.movieService.add((String) movie.get("movieNm"), Long.parseLong((String) movie.get("audiAcc")));
+                this.movieDailyService.add((String) movie.get("movieNm"), Long.parseLong((String) movie.get("rank")), date);
             }
             i++;
             System.out.println("=======i의값====" + i);
