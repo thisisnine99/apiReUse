@@ -15,10 +15,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+
 @Component
 @RequiredArgsConstructor
 public class MovieWeeklyAPI {
@@ -28,6 +26,7 @@ public class MovieWeeklyAPI {
 
         HashMap<String, Object> result = new HashMap<String, Object>();
         String key = "f53a4247c0c7eda74780f0c0b855d761";
+        Map rData = null;
 
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -38,7 +37,7 @@ public class MovieWeeklyAPI {
 
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "?" + "key=" + key + "&targetDt=" + date + "&weekGb=0").build();
 
-            ResponseEntity<String> df = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, String.class);
+//            ResponseEntity<String> df = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, String.class);
 
             //이 한줄의 코드로 API를 호출해 MAP타입으로 전달 받는다.
             ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
@@ -54,8 +53,10 @@ public class MovieWeeklyAPI {
             }
             int j = 0;
             for (Map map : dboxoffList) {
-                String releaseDts = this.movieAPI.movieDetail((String) map.get("movieCd"), date, 1);
-                this.movieAPI.kmdb((String) map.get("movieNm"), releaseDts, 1);
+//                String releaseDts = this.movieAPI.movieDetail((String) map.get("movieCd"), date, 1);
+//                this.movieAPI.kmdb((String) map.get("movieNm"), releaseDts, 1);
+//                rData = this.movieAPI.movieDetail((String) map.get("movieCd"), date, 1);  // api2 호출
+                this.movieAPI.kmdb((String) map.get("movieNm"), (String)rData.get("releaseDateAndNationNm"), 1);
                 this.movieWeeklyService.add(date, Long.parseLong((String) map.get("rank")), (String) map.get("movieNm"), Long.parseLong((String) map.get("audiAcc")));
                 j++;
                 System.out.println("=======j의값====" + j);
@@ -70,6 +71,8 @@ public class MovieWeeklyAPI {
             result.put("statusCode", "999");
             result.put("body", "excpetion오류");
             System.out.println(e.toString());
+//            List<String> failedMovieList = (List<String>)rData.get("failedMovieList");
+//            System.out.println(failedMovieList);
         }
     }
 }

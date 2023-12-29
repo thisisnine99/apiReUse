@@ -40,8 +40,8 @@ public class MovieCotroller {
         List<MovieWeekly> movieWeekList = this.movieWeeklyService.findWeeklyMovie(weeks);
 
         if (movieDailyList.isEmpty()) {
-            this.movieDailyAPI.movieDaily(date);
-            movieDailySize();
+            List<Map> failedMovieList = this.movieDailyAPI.movieDaily(date);
+            movieDailySize(failedMovieList);
         }
         if (movieWeekList.isEmpty()) {
             this.movieWeeklyAPI.movieWeekly(weeks);
@@ -95,32 +95,33 @@ public class MovieCotroller {
         model.addAttribute("movieDailyDetail", movieDaily);
         model.addAttribute("movieruntime", movieruntime);
 
-
         return "Movie/movie_detail";
     }
 
-    public List<MovieDaily> movieDailySize() {
-        List<MovieDaily> movieDailyList = this.movieDailyService.findDailyMovie(date);
-
-        if (movieDailyList.size() < 10) {
-            movieDailyDelete();
+    public void movieDailySize(List<Map> failedMovieList) {
+//        public List<MovieDaily> movieDailySize(List<Map> failedMovieList) {
+//        List<MovieDaily> movieDailyList = this.movieDailyService.findDailyMovie(date);
+//        if (movieDailyList.size() < 10 && failedMovieList != null) {
+        if (failedMovieList != null && !failedMovieList.isEmpty()) {
+            List<Map> failedMoiveList = movieDailyAPI.saveDailyMovieDataByAPI(failedMovieList);
+            movieDailySize(failedMoiveList);
         }
 
-        return movieDailyList;
+//        return movieDailyList;
     }
 
-    public List<MovieDaily> movieDailyDelete() {
-        System.out.println("======재시작=====");
-        this.movieDailyService.deleteDailyMovie(date);
-        movieDailyAPI.movieDaily(date);
-        return movieDailySize();
-    }
+//    public List<MovieDaily> movieDailyDelete() {
+//        System.out.println("======재시작=====");
+//        this.movieDailyService.deleteDailyMovie(date);
+//        movieDailyAPI.movieDaily(date);
+//        return movieDailySize();
+//    }
 
     public List<MovieWeekly> movieWeeklySize() throws ParseException {
         List<MovieWeekly> movieWeeklyList = this.movieWeeklyService.findWeeklyMovie(weeks);
-        if (movieWeeklyList.size() < 10) {
-            movieWeeklyDelete();
-        }
+//        if (movieWeeklyList.size() < 10) {
+//            movieWeeklyDelete();
+//        }
         return movieWeeklyList;
     }
 

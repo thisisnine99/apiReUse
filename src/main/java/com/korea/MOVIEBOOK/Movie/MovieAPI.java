@@ -30,8 +30,9 @@ public class MovieAPI {
     String date = yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     LocalDateTime today = LocalDateTime.now();
     String today2 = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-    public void kmdb(String movieNm, String releaseDts, Integer gubun){
-        String releaseDt = releaseDts.substring(0,8); // genre
+
+    public void kmdb(String movieNm, String releaseDts, Integer gubun) {
+        String releaseDt = releaseDts.substring(0, 8); // genre
         String nation = releaseDts.substring(8);
         if ("한국".equals(nation)) {
             nation = "대한민국";
@@ -77,9 +78,9 @@ public class MovieAPI {
 
             String company = (String) ResultList.get(0).get("company");
 
-            if(gubun == 0){
+            if (gubun == 0) {
                 this.movieDailyService.addKmdb(plotText, company, poster, date, movieNm);
-            } else if(gubun == 1){
+            } else if (gubun == 1) {
                 this.movieWeeklyService.addKmdb(date, plotText, company, poster, movieNm);
             }
 
@@ -95,21 +96,20 @@ public class MovieAPI {
         }
     }
 
-    public String movieDetail(String code, String date, Integer gubun) {
+    public Map<String, Object> movieDetail(Map movie, String date, Integer gubun) {
+//        public Map<String, Object> movieDetail(String code, String date, Integer gubun) {
 
         HashMap<String, Object> result = new HashMap<String, Object>();
         String key = "f53a4247c0c7eda74780f0c0b855d761";
+        Map rData = new HashMap<>();
 
         try {
             RestTemplate restTemplate = new RestTemplate();
-
             HttpHeaders header = new HttpHeaders();
             HttpEntity<?> entity = new HttpEntity<>(header);
             String url = "https://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json";
 
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "?" + "key=" + key + "&movieCd=" + code).build();
-
-            ResponseEntity<String> df = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, String.class);
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + "?" + "key=" + key + "&movieCd=" + movie.get("movieCd")).build();
 
             //이 한줄의 코드로 API를 호출해 MAP타입으로 전달 받는다.
             ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
@@ -119,11 +119,12 @@ public class MovieAPI {
 
             LinkedHashMap movieDetail = (LinkedHashMap) resultMap.getBody().get("movieInfoResult");
 
-            List<String> failedMovieList = new ArrayList<>();
+            List<Map> failedMovieList = new ArrayList<>();
 
-            if((LinkedHashMap) resultMap.getBody().get("movieInfoResult") == null || (Map<String, Object>) movieDetail.get("movieInfo") == null){
-                failedMovieList.add(code);
-//                System.out.println("===  movieInfoResult 문제발생 ===" );
+            if ((LinkedHashMap) resultMap.getBody().get("movieInfoResult") == null || (Map<String, Object>) movieDetail.get("movieInfo") == null) {
+                failedMovieList.add(movie);
+                rData.put("failedMovieList", failedMovieList);
+                //                System.out.println("===  movieInfoResult 문제발생 ===" );
 //                if(gubun == 0 ){
 //                    this.movieDailyService.deleteDailyMovie(date);
 //                } else {
@@ -164,27 +165,23 @@ public class MovieAPI {
 
             ArrayList<Map> directors = (ArrayList<Map>) detailList.get("directors");
             String director = "";
-            if(!directors.isEmpty()){
+            if (!directors.isEmpty()) {
                 director = (String) directors.get(0).get("peopleNm");
             }
 
             ArrayList<Map> nations = (ArrayList<Map>) detailList.get("nations");
             String nationNm = (String) nations.get(0).get("nationNm");
 
-
-            if(gubun == 0){
-                long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
+            if (gubun == 0) {
                 this.movieDailyService.addDeail(movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm, date);
-                long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-                long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
-                System.out.println("시간차이(m) : "+ (afterTime - beforeTime));
-                System.out.println("시간차이(m) : "+secDiffTime);
-            } else if(gubun == 1){
+
+            } else if (gubun == 1) {
                 this.movieWeeklyService.addDeail(date, movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm);
             }
-            System.out.println("sssss");
+//            rData.put("failedMovieList", failedMovieList);
+            rData.put("releaseDateAndNationNm", releaseDate + nationNm);
 
-            return releaseDate+nationNm;
+
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             result.put("statusCode", e.getRawStatusCode());
@@ -195,7 +192,10 @@ public class MovieAPI {
             result.put("statusCode", "999");
             result.put("body", "excpetion오류");
             System.out.println(e.toString());
+
+//            List<String> failedMovieList = (List<String>)rData.get("failedMovieList");
+//            System.out.println(failedMovieList);
         }
-        return "";
+        return rData;
     }
 }
