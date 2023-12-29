@@ -2,6 +2,7 @@ package com.korea.MOVIEBOOK.Movie;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korea.MOVIEBOOK.Movie.Daily.MovieDailyService;
+import com.korea.MOVIEBOOK.Movie.Movie.MovieService;
 import com.korea.MOVIEBOOK.Movie.Weekly.MovieWeeklyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -25,13 +26,14 @@ public class MovieAPI {
 
     private final MovieDailyService movieDailyService;
     private final MovieWeeklyService movieWeeklyService;
+    private final MovieService movieService;
 
     LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
     String date = yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     LocalDateTime today = LocalDateTime.now();
     String today2 = today.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-    public void kmdb(String movieNm, String releaseDts, Integer gubun) {
+    public void kmdb(String movieNm, String releaseDts) {
         String releaseDt = releaseDts.substring(0, 8); // genre
         String nation = releaseDts.substring(8);
         if ("한국".equals(nation)) {
@@ -78,11 +80,7 @@ public class MovieAPI {
 
             String company = (String) ResultList.get(0).get("company");
 
-            if (gubun == 0) {
-                this.movieDailyService.addKmdb(plotText, company, poster, date, movieNm);
-            } else if (gubun == 1) {
-                this.movieWeeklyService.addKmdb(date, plotText, company, poster, movieNm);
-            }
+            this.movieService.addKmdb(plotText, company, poster, movieNm);
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             result.put("statusCode", e.getRawStatusCode());
@@ -96,8 +94,7 @@ public class MovieAPI {
         }
     }
 
-    public Map<String, Object> movieDetail(Map movie, String date, Integer gubun) {
-//        public Map<String, Object> movieDetail(String code, String date, Integer gubun) {
+    public Map<String, Object> movieDetail(Map movie) {
 
         HashMap<String, Object> result = new HashMap<String, Object>();
         String key = "f53a4247c0c7eda74780f0c0b855d761";
@@ -161,12 +158,8 @@ public class MovieAPI {
             ArrayList<Map> nations = (ArrayList<Map>) detailList.get("nations");
             String nationNm = (String) nations.get(0).get("nationNm");
 
-            if (gubun == 0) {
-                this.movieDailyService.addDeail(movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm, date);
 
-            } else if (gubun == 1) {
-                this.movieWeeklyService.addDeail(date, movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm);
-            }
+            this.movieService.findMovieList(movieNm, actors, runtime, genre, releaseDate, viewingRating, director, nationNm);
             rData.put("releaseDateAndNationNm", releaseDate + nationNm);
 
 

@@ -29,11 +29,11 @@ public class MovieWeeklyAPI {
         Map rData = null;
         int j = 0;
         for (Map movie : movieList) {
-            rData = this.movieAPI.movieDetail(movie, date, 1);  // api2 호출
+            rData = this.movieAPI.movieDetail(movie);  // api2 호출
             if(rData.get("failedMovieList") != null) {
                 finalFailedMovieList.addAll((List<Map>) rData.get("failedMovieList"));
             } else {
-                this.movieAPI.kmdb((String) movie.get("movieNm"), (String)rData.get("releaseDateAndNationNm"), 1);
+                this.movieAPI.kmdb((String) movie.get("movieNm"), (String)rData.get("releaseDateAndNationNm"));
                 this.movieWeeklyService.add(date, Long.parseLong((String) movie.get("rank")), (String) movie.get("movieNm"), Long.parseLong((String) movie.get("audiAcc")));
             }
             j++;
